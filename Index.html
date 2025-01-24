@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #222, #555); /* Cool background */
+            margin: 0;
+        }
+
+        .game-button {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(145deg, #ff6b6b, #ff4757);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: transform 0.2s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-button:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent 60%);
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .game-button:hover {
+            background: linear-gradient(145deg, #ff4757, #ff6b6b);
+            transform: translateY(-5px);
+        }
+
+        .game-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .game-button:active:before {
+            transform: scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button class="game-button">Play Now</button>
+</body>
+</html>
