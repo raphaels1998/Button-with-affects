@@ -7,27 +7,29 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" id="master-tab">Master List</button>
     <button class="tab" id="shopping-tab">Shopping List</button>
   </div>
 
+  <!-- Main Container -->
   <div class="container">
-    <!-- Master List Section -->
+    <!-- Master List -->
     <div class="section" id="master-list">
       <div class="folder-grid">
-        <!-- Example Folder -->
-        <div class="folder" onclick="openFolder('Folder 1')">
-          <div class="folder-title">Folder 1</div>
+        <!-- Example Squarish Folders -->
+        <div class="folder" onclick="openFolder('Groceries')">
+          <div class="folder-name">Groceries</div>
         </div>
-        <div class="folder" onclick="openFolder('Folder 2')">
-          <div class="folder-title">Folder 2</div>
+        <div class="folder" onclick="openFolder('Supplies')">
+          <div class="folder-name">Supplies</div>
         </div>
         <div class="add-folder" onclick="addFolder()">+</div>
       </div>
     </div>
 
-    <!-- Shopping List Section -->
+    <!-- Shopping List -->
     <div class="section hidden" id="shopping-list">
       <h2>Shopping List</h2>
       <ul id="shopping-items"></ul>
@@ -42,7 +44,7 @@
     </div>
     <div class="popup-body">
       <ul id="folder-items">
-        <!-- Items will be dynamically added here -->
+        <!-- Item example -->
       </ul>
       <button class="add-item" onclick="addItem()">Add Item</button>
     </div>
