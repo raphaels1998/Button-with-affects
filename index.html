@@ -5,13 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master List</title>
 <style>
-  /* Basic CSS reset */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
   body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -53,13 +46,12 @@
   .folder {
     border: 1px solid #ccc;
     padding: 10px;
-    width: 45%;
+    width: calc(50% - 10px);
     cursor: pointer;
     text-align: center;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
   }
 
   .folder-title {
@@ -70,18 +62,17 @@
   .folder-content {
     display: none;
     position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    max-height: 70vh;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow-y: auto;
-    border: 1px solid #ccc;
+    border: none;
     padding: 20px;
     background-color: #fff;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 0;
   }
 
   .folder-content.active {
@@ -107,6 +98,7 @@
     cursor: pointer;
     color: red;
     text-align: right;
+    font-size: 20px;
   }
 
   .add-btn {
@@ -128,6 +120,21 @@
   <div class="folder-container">
     <div class="folder" id="folder1">
       <div class="folder-title">Produce</div>
+      <div class="folder-content">
+        <div class="close-btn" onclick="closeFolder(this)">×</div>
+        <div class="product-line">
+          <input type="text" placeholder="Product Name" maxlength="15">
+          <input type="number" placeholder="Qty" min="1">
+          <select>
+            <option value="oz">oz</option>
+            <option value="lb">lb</option>
+            <option value="bag">bag</option>
+            <option value="liter">liter</option>
+          </select>
+          <input type="checkbox" class="add-to-shopping">
+        </div>
+        <div class="add-btn" onclick="addProduct(this)">Add Product</div>
+      </div>
     </div>
     <!-- Additional folders can be added here -->
     <button onclick="addFolder()">+</button>
@@ -156,38 +163,36 @@
     const newFolder = document.createElement('div');
     newFolder.className = 'folder';
     newFolder.id = 'folder' + folderCount;
-    newFolder.innerHTML = `<div class="folder-title">Folder ${folderCount}</div>`;
+    newFolder.innerHTML = `
+      <div class="folder-title">Folder ${folderCount}</div>
+      <div class="folder-content">
+        <div class="close-btn" onclick="closeFolder(this)">×</div>
+        <div class="product-line">
+          <input type="text" placeholder="Product Name" maxlength="15">
+          <input type="number" placeholder="Qty" min="1">
+          <select>
+            <option value="oz">oz</option>
+            <option value="lb">lb</option>
+            <option value="bag">bag</option>
+            <option value="liter">liter</option>
+          </select>
+          <input type="checkbox" class="add-to-shopping">
+        </div>
+        <div class="add-btn" onclick="addProduct(this)">Add Product</div>
+      </div>
+    `;
     folderContainer.insertBefore(newFolder, folderContainer.querySelector('button'));
     attachFolderEvents(newFolder);
   }
 
   function openFolder(folder) {
-    const content = document.createElement('div');
-    content.className = 'folder-content';
-    content.innerHTML = `
-      <div class="close-btn" onclick="closeFolder(this)">x</div>
-      <div class="product-line">
-        <input type="text" placeholder="Product Name" maxlength="15">
-        <input type="number" placeholder="Qty" min="1">
-        <select>
-          <option value="oz">oz</option>
-          <option value="lb">lb</option>
-          <option value="bag">bag</option>
-          <option value="liter">liter</option>
-        </select>
-        <input type="checkbox" class="add-to-shopping">
-      </div>
-      <div class="add-btn" onclick="addProduct(this)">Add Product</div>
-    `;
-    folder.appendChild(content);
+    const content = folder.querySelector('.folder-content');
     content.classList.add('active');
-    attachProductEvents(content);
   }
 
   function closeFolder(button) {
     const content = button.parentNode;
     content.classList.remove('active');
-    setTimeout(() => content.remove(), 300);  // Delay to allow animation (if any)
   }
 
   function addProduct(button) {
@@ -236,7 +241,7 @@
     shoppingItem.innerHTML = `
       <span>${productName} - ${quantity} ${unit}</span>
       <input type="number" value="${quantity}" min="1">
-      <span class="close-btn" onclick="removeShoppingItem(this)">x</span>
+      <span class="close-btn" onclick="removeShoppingItem(this)">×</span>
     `;
     shoppingList.appendChild(shoppingItem);
   }
