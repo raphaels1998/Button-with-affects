@@ -1,55 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping App</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master List</title>
+<style>
+  /* Add your CSS styles here */
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .folder { border: 1px solid #ccc; padding: 10px; margin: 10px; width: 45%; display: inline-block; vertical-align: top; }
+  .folder-title { font-weight: bold; color: brown; cursor: pointer; }
+  .folder-content { display: none; width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px; background-color: #f9f9f9; position: absolute; z-index: 1; }
+  .folder-content.active { display: block; }
+  .product-line { display: flex; align-items: center; margin-bottom: 10px; }
+  .product-line input, .product-line select { margin-right: 5px; }
+  .close-btn { cursor: pointer; color: red; }
+  .add-btn { cursor: pointer; color: green; margin-top: 10px; }
+</style>
 </head>
 <body>
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" id="master-tab">Master List</button>
-    <button class="tab" id="shopping-tab">Shopping List</button>
-  </div>
 
-  <!-- Main Container -->
-  <div class="container">
-    <!-- Master List -->
-    <div class="section" id="master-list">
-      <div class="folder-grid">
-        <!-- Example Apple-Like Folders -->
-        <div class="folder" onclick="openFolder('Groceries')">
-          <div class="folder-name">Groceries</div>
-        </div>
-        <div class="folder" onclick="openFolder('Supplies')">
-          <div class="folder-name">Supplies</div>
-        </div>
-        <div class="add-folder" onclick="addFolder()">+</div>
+<div>
+  <button onclick="showTab('master')">Master List</button>
+  <button onclick="showTab('shopping')">Shopping List</button>
+</div>
+
+<div id="master" class="tab active">
+  <div class="folder" id="folder1">
+    <div class="folder-title">Folder 1</div>
+    <div class="folder-content">
+      <div class="product-line">
+        <input type="text" placeholder="Product Name" maxlength="15">
+        <input type="number" placeholder="Qty" min="1">
+        <select>
+          <option value="oz">oz</option>
+          <option value="lb">lb</option>
+          <option value="bag">bag</option>
+          <option value="liter">liter</option>
+        </select>
+        <input type="checkbox" class="add-to-shopping">
+        <span class="close-btn" onclick="removeProduct(this)">x</span>
       </div>
-    </div>
-
-    <!-- Shopping List -->
-    <div class="section hidden" id="shopping-list">
-      <h2>Shopping List</h2>
-      <ul id="shopping-items"></ul>
+      <div class="add-btn" onclick="addProduct(this)">Add Product</div>
+      <span class="close-btn" onclick="closeFolder(this)">x</span>
     </div>
   </div>
+  <!-- Additional folders can be added here -->
+  <button onclick="addFolder()">+</button>
+</div>
 
-  <!-- Folder Popup -->
-  <div class="folder-popup hidden" id="folder-popup">
-    <div class="popup-header">
-      <h3 id="popup-title">Folder</h3>
-      <button class="close-popup" onclick="closePopup()">X</button>
-    </div>
-    <div class="popup-body">
-      <ul id="folder-items">
-        <!-- Product Lines Will Be Dynamically Added -->
-      </ul>
-      <button class="add-item" onclick="addItem()">Add Product</button>
-    </div>
-  </div>
+<div id="shopping" class="tab">
+  <!-- Shopping list content here -->
+</div>
 
-  <script src="script.js"></script>
+<script>
+  function showTab(tabName) {
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.getElementById(tabName).classList.add('active');
+  }
+
+  function addFolder() {
+    // Logic to add a new folder
+  }
+
+  function addProduct(button) {
+    const productLine = document.createElement('div');
+    productLine.className = 'product-line';
+    productLine.innerHTML = `
+      <input type="text" placeholder="Product Name" maxlength="15">
+      <input type="number" placeholder="Qty" min="1">
+      <select>
+        <option value="oz">oz</option>
+        <option value="lb">lb</option>
+        <option value="bag">bag</option>
+        <option value="liter">liter</option>
+      </select>
+      <input type="checkbox" class="add-to-shopping">
+      <span class="close-btn" onclick="removeProduct(this)">x</span>
+    `;
+    button.parentNode.insertBefore(productLine, button);
+  }
+
+  function removeProduct(button) {
+    button.parentNode.remove();
+  }
+
+  function closeFolder(button) {
+    button.parentNode.classList.remove('active');
+  }
+
+  document.querySelectorAll('.folder-title').forEach(title => {
+    title.addEventListener('click', () => {
+      title.nextElementSibling.classList.toggle('active');
+    });
+  });
+
+  document.querySelectorAll('.add-to-shopping').forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        // Logic to add the product to the shopping list
+      } else {
+        // Logic to remove the product from the shopping list
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
