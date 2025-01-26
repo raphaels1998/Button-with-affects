@@ -1,61 +1,84 @@
-// Toggle between tabs
-const tabs = document.querySelectorAll('.tab');
-const sections = document.querySelectorAll('.section');
+// Variables to store folder and shopping list data
+const folderPopup = document.getElementById("folder-popup");
+const folderTitle = document.getElementById("popup-title");
+const folderItems = document.getElementById("folder-items");
+const shoppingItems = document.getElementById("shopping-items");
+let folders = {};
+
+// Toggle Tabs
+const tabs = document.querySelectorAll(".tab");
+const sections = document.querySelectorAll(".section");
 
 tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => {
-    tabs.forEach((t) => t.classList.remove('active'));
-    tab.classList.add('active');
-
-    sections.forEach((section) => section.classList.remove('active'));
-    sections[index].classList.add('active');
+  tab.addEventListener("click", () => {
+    tabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    sections.forEach((section) => section.classList.add("hidden"));
+    sections[index].classList.remove("hidden");
   });
 });
 
-// Folder functionality
-const folderPopup = document.getElementById('folder-popup');
-const folderTitle = document.getElementById('popup-title');
-const folderItems = document.getElementById('folder-items');
-let folders = {};
-
-// Open a folder
-function openFolder(folderName) {
-  folderTitle.textContent = folderName;
-  folderItems.innerHTML = '';
-  if (!folders[folderName]) folders[folderName] = [];
-  folders[folderName].forEach((item) => addItemToPopup(item));
-  folderPopup.classList.remove('hidden');
+// Open Folder
+function openFolder(name) {
+  folderTitle.textContent = name;
+  folderItems.innerHTML = ""; // Clear previous items
+  if (!folders[name]) folders[name] = []; // Create folder if it doesn't exist
+  folders[name].forEach((item) => {
+    addItemToPopup(item);
+  });
+  folderPopup.classList.remove("hidden");
 }
 
-// Close the popup
+// Close Popup
 function closePopup() {
-  folderPopup.classList.add('hidden');
+  folderPopup.classList.add("hidden");
 }
 
-// Add a new folder
+// Add Folder
 function addFolder() {
-  const folderGrid = document.querySelector('.folder-grid');
-  const folderName = `Folder ${Object.keys(folders).length + 1}`;
-  folders[folderName] = [];
-
-  const folderDiv = document.createElement('div');
-  folderDiv.className = 'folder';
-  folderDiv.onclick = () => openFolder(folderName);
-  folderDiv.innerHTML = `<div class="folder-title">${folderName}</div>`;
-  folderGrid.insertBefore(folderDiv, folderGrid.lastElementChild);
-}
-
-// Add a new item to the folder
-function addItem() {
-  const itemName = prompt('Enter item name:');
-  if (itemName && !folders[folderTitle.textContent].includes(itemName)) {
-    folders[folderTitle.textContent].push(itemName);
-    addItemToPopup(itemName);
+  const folderGrid = document.querySelector(".folder-grid");
+  const folderName = prompt("Enter folder name:");
+  if (folderName && !folders[folderName]) {
+    folders[folderName] = [];
+    const folderDiv = document.createElement("div");
+    folderDiv.className = "folder";
+    folderDiv.onclick = () => openFolder(folderName);
+    folderDiv.innerHTML = `<div class="folder-name">${folderName}</div>`;
+    folderGrid.insertBefore(folderDiv, folderGrid.lastElementChild);
   }
 }
 
-function addItemToPopup(itemName) {
-  const li = document.createElement('li');
-  li.textContent = itemName;
+// Add Item
+function addItem() {
+  const itemName = prompt("Enter item name:");
+  const quantity = prompt("Enter quantity:");
+  const unit = prompt("Enter unit (oz/lb/bag/liter):");
+  const item = { name: itemName, quantity, unit };
+  if (
+    itemName &&
+    !folders[folderTitle.textContent].some((i) => i.name === itemName)
+  ) {
+    folders[folderTitle.textContent].push(item);
+    addItemToPopup(item);
+  }
+}
+
+// Add Item to Popup
+function addItemToPopup(item) {
+  const li = document.createElement("li");
+  li.innerHTML = `
+    ${item.name} - ${item.quantity} ${item.unit}
+    <button onclick="addToShoppingList('${item.name}')">✔</button>
+  `;
   folderItems.appendChild(li);
+}
+
+// Add to Shopping List
+function addToShoppingList(itemName) {
+  const item = folders[folderTitle.textContent].find((i) => i.name === itemName);
+  if (item && !Array.from(shoppingItems.children).some((li) => li.textContent.includes(item.name))) {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} - ${item.quantity} ${item.unit}`;
+    shoppingItems.appendChild(li);
+  }
 }
