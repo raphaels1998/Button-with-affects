@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master List and Shopping List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab(event, 'MasterList')">Master List</button>
+        <button class="tab-button" onclick="openTab(event, 'ShoppingList')">Shopping List</button>
+    </div>
+
+    <div id="MasterList" class="tab-content">
+        <div class="item" onclick="expandItem(this)">
+            <div class="item-content">
+                <input type="text" placeholder="Product Name">
+                <input type="number" placeholder="Quantity">
+                <button class="close-btn" onclick="minimizeItem(event, this)">x</button>
+            </div>
+        </div>
+        <!-- Add more items as needed -->
+    </div>
+
+    <div id="ShoppingList" class="tab-content">
+        <ul id="shopping-list"></ul>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
