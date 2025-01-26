@@ -1,76 +1,114 @@
-/* General Styles */
+/* General Reset */
 body {
-    font-family: 'Georgia', serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f1e0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
 }
 
+/* Tabs */
+.tabs {
+  display: flex;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  flex: 1;
+  padding: 15px;
+  text-align: center;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Container */
 .container {
-    text-align: center;
+  padding: 20px;
 }
 
-/* Deep Press Button */
-.deep-press-btn {
-    background-color: #8b5e3c;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 5px #6f4c2e;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.section {
+  display: none;
 }
 
-.deep-press-btn:active {
-    transform: translateY(5px);
-    box-shadow: 0 2px #6f4c2e;
+.section.active {
+  display: block;
 }
 
-/* Scroll Background */
-.scroll-hidden {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
+/* Folder Grid */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.scroll-background {
-    width: 80%;
-    height: 70%;
-    background: linear-gradient(to bottom, #e0c49e, #d3aa7b);
-    border: 10px solid #8b5e3c;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    overflow-y: scroll;
+.folder, .add-folder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-/* Scroll Input */
-.scroll-input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 16px;
-    font-family: 'Georgia', serif;
-    color: #5a3e2b;
-    resize: none;
+.folder-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: brown;
 }
 
-/* Add a glowing focus to textarea */
-.scroll-input:focus {
-    box-shadow: 0 0 10px #ffd700;
+.add-folder {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Popup */
+.folder-popup {
+  position: fixed;
+  top: 20%;
+  left: 10%;
+  right: 10%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.popup-body {
+  margin-top: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.hidden {
+  display: none;
 }
