@@ -1,8 +1,8 @@
-// Variables to store folder and shopping list data
 const folderPopup = document.getElementById("folder-popup");
 const folderTitle = document.getElementById("popup-title");
 const folderItems = document.getElementById("folder-items");
 const shoppingItems = document.getElementById("shopping-items");
+
 let folders = {};
 
 // Toggle Tabs
@@ -22,10 +22,8 @@ tabs.forEach((tab, index) => {
 function openFolder(name) {
   folderTitle.textContent = name;
   folderItems.innerHTML = ""; // Clear previous items
-  if (!folders[name]) folders[name] = []; // Create folder if it doesn't exist
-  folders[name].forEach((item) => {
-    addItemToPopup(item);
-  });
+  if (!folders[name]) folders[name] = [];
+  folders[name].forEach((item) => addItemToPopup(item));
   folderPopup.classList.remove("hidden");
 }
 
@@ -48,22 +46,20 @@ function addFolder() {
   }
 }
 
-// Add Item
+// Add Product
 function addItem() {
-  const itemName = prompt("Enter item name:");
+  const itemName = prompt("Enter product name:");
   const quantity = prompt("Enter quantity:");
   const unit = prompt("Enter unit (oz/lb/bag/liter):");
   const item = { name: itemName, quantity, unit };
-  if (
-    itemName &&
-    !folders[folderTitle.textContent].some((i) => i.name === itemName)
-  ) {
+
+  if (itemName && !folders[folderTitle.textContent].some((i) => i.name === itemName)) {
     folders[folderTitle.textContent].push(item);
     addItemToPopup(item);
   }
 }
 
-// Add Item to Popup
+// Add Product to Popup
 function addItemToPopup(item) {
   const li = document.createElement("li");
   li.innerHTML = `
@@ -73,7 +69,7 @@ function addItemToPopup(item) {
   folderItems.appendChild(li);
 }
 
-// Add to Shopping List
+// Add Product to Shopping List
 function addToShoppingList(itemName) {
   const item = folders[folderTitle.textContent].find((i) => i.name === itemName);
   if (item && !Array.from(shoppingItems.children).some((li) => li.textContent.includes(item.name))) {
