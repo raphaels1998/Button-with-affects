@@ -5,29 +5,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master List</title>
 <style>
-  /* Add your CSS styles here */
-  .tab { display: none; }
-  .tab.active { display: block; }
-  .folder-container { display: flex; flex-wrap: wrap; gap: 10px; }
-  .folder { border: 1px solid #ccc; padding: 10px; width: 45%; cursor: pointer; text-align: center; }
-  .folder-title { font-weight: bold; color: brown; }
-  .folder-content { display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background-color: #fff; z-index: 100; }
-  .folder-content.active { display: block; }
-  .product-line { display: flex; align-items: center; margin-bottom: 10px; }
-  .product-line input, .product-line select { margin-right: 5px; flex: 1; }
-  .checkmark { margin-left: auto; }
-  .close-btn { cursor: pointer; color: red; text-align: right; }
-  .add-btn { cursor: pointer; color: green; text-align: center; margin-top: 10px; }
+  /* Basic CSS reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+
+  .tabs {
+    margin-bottom: 20px;
+  }
+
+  .tab-button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .tab-button.active {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .folder-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .folder {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 45%;
+    cursor: pointer;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .folder-title {
+    font-weight: bold;
+    color: brown;
+  }
+
+  .folder-content {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #fff;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .folder-content.active {
+    display: block;
+  }
+
+  .product-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .product-line input, .product-line select {
+    margin-right: 5px;
+    flex: 1;
+  }
+
+  .checkmark {
+    margin-left: auto;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    color: red;
+    text-align: right;
+  }
+
+  .add-btn {
+    cursor: pointer;
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
 
-<div>
-  <button onclick="showTab('master')">Master List</button>
-  <button onclick="showTab('shopping')">Shopping List</button>
+<div class="tabs">
+  <button class="tab-button active" onclick="showTab('master')">Master List</button>
+  <button class="tab-button" onclick="showTab('shopping')">Shopping List</button>
 </div>
 
-<div id="master" class="tab active">
+<div id="master" class="tab-content active">
   <div class="folder-container">
     <div class="folder" id="folder1">
       <div class="folder-title">Produce</div>
@@ -37,16 +134,20 @@
   </div>
 </div>
 
-<div id="shopping" class="tab">
+<div id="shopping" class="tab-content">
   <div id="shopping-list"></div>
 </div>
 
 <script>
   function showTab(tabName) {
-    document.querySelectorAll('.tab').forEach(tab => {
+    document.querySelectorAll('.tab-content').forEach(tab => {
       tab.classList.remove('active');
     });
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.classList.remove('active');
+    });
     document.getElementById(tabName).classList.add('active');
+    document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
   }
 
   function addFolder() {
