@@ -8,14 +8,16 @@
   /* Add your CSS styles here */
   .tab { display: none; }
   .tab.active { display: block; }
-  .folder { border: 1px solid #ccc; padding: 10px; margin: 10px; width: 45%; display: inline-block; vertical-align: top; position: relative; cursor: pointer; }
-  .folder-title { font-weight: bold; color: brown; text-align: center; }
-  .folder-content { display: none; width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px; background-color: #f9f9f9; position: absolute; z-index: 1; top: 50px; left: 50%; transform: translateX(-50%); }
+  .folder-container { display: flex; flex-wrap: wrap; gap: 10px; }
+  .folder { border: 1px solid #ccc; padding: 10px; width: 45%; cursor: pointer; text-align: center; }
+  .folder-title { font-weight: bold; color: brown; }
+  .folder-content { display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background-color: #fff; z-index: 100; }
   .folder-content.active { display: block; }
   .product-line { display: flex; align-items: center; margin-bottom: 10px; }
-  .product-line input, .product-line select { margin-right: 5px; }
-  .close-btn { cursor: pointer; color: red; margin-left: auto; }
-  .add-btn { cursor: pointer; color: green; margin-top: 10px; }
+  .product-line input, .product-line select { margin-right: 5px; flex: 1; }
+  .checkmark { margin-left: auto; }
+  .close-btn { cursor: pointer; color: red; text-align: right; }
+  .add-btn { cursor: pointer; color: green; text-align: center; margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -26,27 +28,13 @@
 </div>
 
 <div id="master" class="tab active">
-  <div class="folder" id="folder1">
-    <div class="folder-title">Produce</div>
-    <div class="folder-content">
-      <div class="product-line">
-        <input type="text" placeholder="Product Name" maxlength="15">
-        <input type="number" placeholder="Qty" min="1">
-        <select>
-          <option value="oz">oz</option>
-          <option value="lb">lb</option>
-          <option value="bag">bag</option>
-          <option value="liter">liter</option>
-        </select>
-        <input type="checkbox" class="add-to-shopping">
-        <span class="close-btn" onclick="removeProduct(this)">x</span>
-      </div>
-      <div class="add-btn" onclick="addProduct(this)">Add Product</div>
-      <span class="close-btn" onclick="closeFolder(this)">x</span>
+  <div class="folder-container">
+    <div class="folder" id="folder1">
+      <div class="folder-title">Produce</div>
     </div>
+    <!-- Additional folders can be added here -->
+    <button onclick="addFolder()">+</button>
   </div>
-  <!-- Additional folders can be added here -->
-  <button onclick="addFolder()">+</button>
 </div>
 
 <div id="shopping" class="tab">
@@ -62,32 +50,43 @@
   }
 
   function addFolder() {
-    const folderContainer = document.getElementById('master');
+    const folderContainer = document.querySelector('.folder-container');
     const folderCount = document.querySelectorAll('.folder').length + 1;
     const newFolder = document.createElement('div');
     newFolder.className = 'folder';
     newFolder.id = 'folder' + folderCount;
-    newFolder.innerHTML = `
-      <div class="folder-title">Folder ${folderCount}</div>
-      <div class="folder-content">
-        <div class="product-line">
-          <input type="text" placeholder="Product Name" maxlength="15">
-          <input type="number" placeholder="Qty" min="1">
-          <select>
-            <option value="oz">oz</option>
-            <option value="lb">lb</option>
-            <option value="bag">bag</option>
-            <option value="liter">liter</option>
-          </select>
-          <input type="checkbox" class="add-to-shopping">
-          <span class="close-btn" onclick="removeProduct(this)">x</span>
-        </div>
-        <div class="add-btn" onclick="addProduct(this)">Add Product</div>
-        <span class="close-btn" onclick="closeFolder(this)">x</span>
-      </div>
-    `;
+    newFolder.innerHTML = `<div class="folder-title">Folder ${folderCount}</div>`;
     folderContainer.insertBefore(newFolder, folderContainer.querySelector('button'));
     attachFolderEvents(newFolder);
+  }
+
+  function openFolder(folder) {
+    const content = document.createElement('div');
+    content.className = 'folder-content';
+    content.innerHTML = `
+      <div class="close-btn" onclick="closeFolder(this)">x</div>
+      <div class="product-line">
+        <input type="text" placeholder="Product Name" maxlength="15">
+        <input type="number" placeholder="Qty" min="1">
+        <select>
+          <option value="oz">oz</option>
+          <option value="lb">lb</option>
+          <option value="bag">bag</option>
+          <option value="liter">liter</option>
+        </select>
+        <input type="checkbox" class="add-to-shopping">
+      </div>
+      <div class="add-btn" onclick="addProduct(this)">Add Product</div>
+    `;
+    folder.appendChild(content);
+    content.classList.add('active');
+    attachProductEvents(content);
+  }
+
+  function closeFolder(button) {
+    const content = button.parentNode;
+    content.classList.remove('active');
+    setTimeout(() => content.remove(), 300);  // Delay to allow animation (if any)
   }
 
   function addProduct(button) {
@@ -103,32 +102,14 @@
         <option value="liter">liter</option>
       </select>
       <input type="checkbox" class="add-to-shopping">
-      <span class="close-btn" onclick="removeProduct(this)">x</span>
     `;
     button.parentNode.insertBefore(productLine, button);
     attachProductEvents(productLine);
   }
 
-  function removeProduct(button) {
-    button.parentNode.remove();
-  }
-
-  function closeFolder(button) {
-    button.parentNode.classList.remove('active');
-  }
-
   function attachFolderEvents(folder) {
-    folder.querySelector('.folder-title').addEventListener('click', () => {
-      folder.querySelector('.folder-content').classList.toggle('active');
-    });
-    folder.querySelectorAll('.add-to-shopping').forEach(checkbox => {
-      checkbox.addEventListener('change', (event) => {
-        if (event.target.checked) {
-          addToShoppingList(event.target);
-        } else {
-          removeFromShoppingList(event.target);
-        }
-      });
+    folder.addEventListener('click', () => {
+      openFolder(folder);
     });
   }
 
