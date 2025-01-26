@@ -8,13 +8,13 @@
   /* Add your CSS styles here */
   .tab { display: none; }
   .tab.active { display: block; }
-  .folder { border: 1px solid #ccc; padding: 10px; margin: 10px; width: 45%; display: inline-block; vertical-align: top; }
-  .folder-title { font-weight: bold; color: brown; cursor: pointer; }
-  .folder-content { display: none; width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px; background-color: #f9f9f9; position: absolute; z-index: 1; }
+  .folder { border: 1px solid #ccc; padding: 10px; margin: 10px; width: 45%; display: inline-block; vertical-align: top; position: relative; cursor: pointer; }
+  .folder-title { font-weight: bold; color: brown; text-align: center; }
+  .folder-content { display: none; width: 80%; max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px; background-color: #f9f9f9; position: absolute; z-index: 1; top: 50px; left: 50%; transform: translateX(-50%); }
   .folder-content.active { display: block; }
   .product-line { display: flex; align-items: center; margin-bottom: 10px; }
   .product-line input, .product-line select { margin-right: 5px; }
-  .close-btn { cursor: pointer; color: red; }
+  .close-btn { cursor: pointer; color: red; margin-left: auto; }
   .add-btn { cursor: pointer; color: green; margin-top: 10px; }
 </style>
 </head>
@@ -27,7 +27,7 @@
 
 <div id="master" class="tab active">
   <div class="folder" id="folder1">
-    <div class="folder-title">Folder 1</div>
+    <div class="folder-title">Produce</div>
     <div class="folder-content">
       <div class="product-line">
         <input type="text" placeholder="Product Name" maxlength="15">
@@ -50,7 +50,7 @@
 </div>
 
 <div id="shopping" class="tab">
-  <!-- Shopping list content here -->
+  <div id="shopping-list"></div>
 </div>
 
 <script>
@@ -62,7 +62,32 @@
   }
 
   function addFolder() {
-    // Logic to add a new folder
+    const folderContainer = document.getElementById('master');
+    const folderCount = document.querySelectorAll('.folder').length + 1;
+    const newFolder = document.createElement('div');
+    newFolder.className = 'folder';
+    newFolder.id = 'folder' + folderCount;
+    newFolder.innerHTML = `
+      <div class="folder-title">Folder ${folderCount}</div>
+      <div class="folder-content">
+        <div class="product-line">
+          <input type="text" placeholder="Product Name" maxlength="15">
+          <input type="number" placeholder="Qty" min="1">
+          <select>
+            <option value="oz">oz</option>
+            <option value="lb">lb</option>
+            <option value="bag">bag</option>
+            <option value="liter">liter</option>
+          </select>
+          <input type="checkbox" class="add-to-shopping">
+          <span class="close-btn" onclick="removeProduct(this)">x</span>
+        </div>
+        <div class="add-btn" onclick="addProduct(this)">Add Product</div>
+        <span class="close-btn" onclick="closeFolder(this)">x</span>
+      </div>
+    `;
+    folderContainer.insertBefore(newFolder, folderContainer.querySelector('button'));
+    attachFolderEvents(newFolder);
   }
 
   function addProduct(button) {
@@ -81,6 +106,7 @@
       <span class="close-btn" onclick="removeProduct(this)">x</span>
     `;
     button.parentNode.insertBefore(productLine, button);
+    attachProductEvents(productLine);
   }
 
   function removeProduct(button) {
@@ -91,20 +117,68 @@
     button.parentNode.classList.remove('active');
   }
 
-  document.querySelectorAll('.folder-title').forEach(title => {
-    title.addEventListener('click', () => {
-      title.nextElementSibling.classList.toggle('active');
+  function attachFolderEvents(folder) {
+    folder.querySelector('.folder-title').addEventListener('click', () => {
+      folder.querySelector('.folder-content').classList.toggle('active');
     });
-  });
+    folder.querySelectorAll('.add-to-shopping').forEach(checkbox => {
+      checkbox.addEventListener('change', (event) => {
+        if (event.target.checked) {
+          addToShoppingList(event.target);
+        } else {
+          removeFromShoppingList(event.target);
+        }
+      });
+    });
+  }
 
-  document.querySelectorAll('.add-to-shopping').forEach(checkbox => {
-    checkbox.addEventListener('change', (event) => {
+  function attachProductEvents(productLine) {
+    productLine.querySelector('.add-to-shopping').addEventListener('change', (event) => {
       if (event.target.checked) {
-        // Logic to add the product to the shopping list
+        addToShoppingList(event.target);
       } else {
-        // Logic to remove the product from the shopping list
+        removeFromShoppingList(event.target);
       }
     });
+  }
+
+  function addToShoppingList(checkbox) {
+    const productLine = checkbox.parentNode;
+    const productName = productLine.querySelector('input[type="text"]').value;
+    const quantity = productLine.querySelector('input[type="number"]').value;
+    const unit = productLine.querySelector('select').value;
+    const shoppingList = document.getElementById('shopping-list');
+
+    const shoppingItem = document.createElement('div');
+    shoppingItem.className = 'shopping-item';
+    shoppingItem.innerHTML = `
+      <span>${productName} - ${quantity} ${unit}</span>
+      <input type="number" value="${quantity}" min="1">
+      <span class="close-btn" onclick="removeShoppingItem(this)">x</span>
+    `;
+    shoppingList.appendChild(shoppingItem);
+  }
+
+  function removeFromShoppingList(checkbox) {
+    const productLine = checkbox.parentNode;
+    const productName = productLine.querySelector('input[type="text"]').value;
+    const shoppingList = document.getElementById('shopping-list');
+    const shoppingItems = shoppingList.querySelectorAll('.shopping-item');
+
+    shoppingItems.forEach(item => {
+      if (item.querySelector('span').innerText.includes(productName)) {
+        item.remove();
+      }
+    });
+  }
+
+  function removeShoppingItem(button) {
+    button.parentNode.remove();
+  }
+
+  // Attach events to existing folders
+  document.querySelectorAll('.folder').forEach(folder => {
+    attachFolderEvents(folder);
   });
 </script>
 
