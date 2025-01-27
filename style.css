@@ -1,78 +1,71 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e0e0e0;
 }
 
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+.desktop {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
 }
 
-.tab-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    background-color: #ddd;
-    margin: 0 5px;
+.folder {
+  text-align: center;
+  cursor: pointer;
 }
 
-.tab-button:hover {
-    background-color: #ccc;
+.folder-icon {
+  font-size: 50px;
 }
 
-.tab-content {
-    display: none;
-    padding: 20px;
+.folder-name {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
 }
 
-.item {
-    width: 100px;
-    height: 100px;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+.folder-content {
+  display: none;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.item-content {
-    display: none;
-    flex-direction: column;
-    align-items: center;
+.folder-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-.item.expanded {
-    width: 200px;
-    height: 200px;
+.folder-header button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
 }
 
-.item.expanded .item-content {
-    display: flex;
+.folder-content ul {
+  list-style: none;
+  padding: 0;
 }
 
-.close-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
+.folder-content li {
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
 
-#shopping-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-#shopping-list li {
-    padding: 10px;
-    background-color: #f0f0f0;
-    margin: 5px 0;
-    position: relative;
+.folder-content li:hover {
+  background-color: #f0f0f0;
 }
