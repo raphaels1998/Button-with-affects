@@ -26,13 +26,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
-        }
-
-        .container.enlarged {
-            transform: scale(2); /* Double the size */
-        }
-
-        .container.draggable {
             cursor: move;
         }
 
@@ -47,10 +40,10 @@
     </style>
 </head>
 <body>
-    <div class="container draggable" draggable="true">
+    <div class="container" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
-    <div class="container draggable" draggable="true">
+    <div class="container" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
 
@@ -62,8 +55,8 @@
             container.addEventListener('dragstart', (event) => {
                 draggedContainer = container;
                 event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/html', container.innerHTML);
-                container.classList.add('enlarged');
+                event.dataTransfer.setData('text/plain', container.innerHTML);
+                setTimeout(() => container.classList.add('hidden'), 0);
             });
 
             container.addEventListener('dragover', (event) => {
@@ -72,23 +65,20 @@
             });
 
             container.addEventListener('drop', (event) => {
+                event.preventDefault();
                 event.stopPropagation();
+
                 if (draggedContainer !== container) {
                     draggedContainer.innerHTML = container.innerHTML;
-                    container.innerHTML = event.dataTransfer.getData('text/html');
+                    container.innerHTML = event.dataTransfer.getData('text/plain');
                 }
-                container.classList.remove('enlarged');
-                return false;
+                container.classList.remove('hidden');
             });
 
             container.addEventListener('dragend', () => {
-                containers.forEach(c => c.classList.remove('enlarged'));
+                containers.forEach(c => c.classList.remove('hidden'));
                 draggedContainer = null;
             });
-        });
-
-        document.addEventListener('click', () => {
-            containers.forEach(c => c.classList.remove('enlarged'));
         });
     </script>
 </body>
