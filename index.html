@@ -54,7 +54,6 @@
             container.addEventListener('dragstart', (event) => {
                 draggedElement = container;
                 event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/plain', '');
             });
 
             container.addEventListener('dragover', (event) => {
@@ -65,10 +64,16 @@
             container.addEventListener('drop', (event) => {
                 event.preventDefault();
                 if (draggedElement !== container) {
+                    // Swap the elements
                     const parent = container.parentNode;
-                    const nextSibling = container.nextElementSibling === draggedElement ? container : container.nextElementSibling;
-                    parent.insertBefore(draggedElement, container);
-                    parent.insertBefore(container, nextSibling);
+                    const draggedIndex = Array.prototype.indexOf.call(parent.children, draggedElement);
+                    const targetIndex = Array.prototype.indexOf.call(parent.children, container);
+
+                    if (draggedIndex < targetIndex) {
+                        parent.insertBefore(draggedElement, container.nextSibling);
+                    } else {
+                        parent.insertBefore(draggedElement, container);
+                    }
                 }
             });
 
