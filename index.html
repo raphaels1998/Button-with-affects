@@ -54,6 +54,7 @@
             font-size: 16px;
             width: 100%; /* Make inputs fill container width */
         }
+
     </style>
 </head>
 <body>
@@ -118,6 +119,11 @@
                 draggedElement.style.top = '';
                 placeholder.remove();
                 draggedElement = null;
+            });
+
+            // Prevent unwanted text selection on long press
+            container.addEventListener('selectstart', (event) => {
+                event.preventDefault();
             });
         });
     </script>
