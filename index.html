@@ -33,7 +33,13 @@
 
         .dragging {
             opacity: 0.5; /* Visual feedback for dragging */
-            z-index: 1000; /* Ensure the dragged element is on top */
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .placeholder {
+            background: #ddd;
+            border: 2px dashed #bbb;
         }
 
         input {
@@ -56,16 +62,19 @@
 
     <script>
         let draggedElement = null;
+        let placeholder = null;
         let startX, startY, currentX, currentY;
 
         document.querySelectorAll('.container').forEach(container => {
             container.addEventListener('touchstart', (event) => {
                 draggedElement = container;
+                placeholder = document.createElement('div');
+                placeholder.className = 'container placeholder';
+                container.parentNode.insertBefore(placeholder, container.nextSibling);
                 container.classList.add('dragging');
                 const touch = event.touches[0];
                 startX = touch.clientX - container.offsetLeft;
                 startY = touch.clientY - container.offsetTop;
-                container.style.position = 'absolute';
                 container.style.left = `${touch.clientX - startX}px`;
                 container.style.top = `${touch.clientY - startY}px`;
             });
@@ -77,26 +86,27 @@
                 currentY = touch.clientY - startY;
                 draggedElement.style.left = `${currentX}px`;
                 draggedElement.style.top = `${currentY}px`;
-            });
 
-            container.addEventListener('touchend', (event) => {
-                if (!draggedElement) return;
-                const touch = event.changedTouches[0];
+                // Check for swap positions
                 const target = document.elementFromPoint(touch.clientX, touch.clientY);
                 if (target && target !== draggedElement && target.classList.contains('container')) {
-                    const parent = target.parentNode;
-                    const draggedIndex = [...parent.children].indexOf(draggedElement);
-                    const targetIndex = [...parent.children].indexOf(target);
-                    if (draggedIndex < targetIndex) {
-                        parent.insertBefore(draggedElement, target.nextSibling);
+                    const rect = target.getBoundingClientRect();
+                    if (currentY > rect.top + rect.height / 2) {
+                        target.parentNode.insertBefore(placeholder, target.nextSibling);
                     } else {
-                        parent.insertBefore(draggedElement, target);
+                        target.parentNode.insertBefore(placeholder, target);
                     }
                 }
+            });
+
+            container.addEventListener('touchend', () => {
+                if (!draggedElement) return;
+                placeholder.parentNode.insertBefore(draggedElement, placeholder);
+                draggedElement.classList.remove('dragging');
                 draggedElement.style.position = '';
                 draggedElement.style.left = '';
                 draggedElement.style.top = '';
-                draggedElement.classList.remove('dragging');
+                placeholder.remove();
                 draggedElement = null;
             });
         });
