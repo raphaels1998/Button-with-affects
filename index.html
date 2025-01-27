@@ -42,7 +42,7 @@
 
         .folder-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 16px;
         }
 
@@ -91,17 +91,19 @@
 
         .item-input {
             flex: 1;
-            border: none;
+            border: 1px solid #ccc;
             background: none;
             padding: 8px;
+            border-radius: 6px;
         }
 
         .quantity-input {
             width: 50px;
-            border: none;
+            border: 1px solid #ccc;
             background: none;
             padding: 8px;
             text-align: right;
+            border-radius: 6px;
         }
 
         .checkbox {
@@ -184,8 +186,21 @@
                     <input class="quantity-input" type="number" value="1" min="1">
                     <div class="checkbox" onclick="toggleCheckbox(this)"></div>
                 </div>
+                <button onclick="addItem(this)">Add Item</button>
             `;
             folderGrid.insertBefore(newFolder, folderGrid.lastElementChild);
+        }
+
+        function addItem(button) {
+            const folderCard = button.closest('.folder-card');
+            const newItemRow = document.createElement('div');
+            newItemRow.className = 'item-row';
+            newItemRow.innerHTML = `
+                <input class="item-input" placeholder="Item">
+                <input class="quantity-input" type="number" value="1" min="1">
+                <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+            `;
+            folderCard.insertBefore(newItemRow, button);
         }
 
         function toggleCheckbox(checkbox) {
