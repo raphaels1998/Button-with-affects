@@ -27,6 +27,7 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
             cursor: move;
+            touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
         }
 
         input {
@@ -49,36 +50,49 @@
 
     <script>
         let draggedElement = null;
+        let startX, startY, currentX, currentY;
 
         document.querySelectorAll('.container').forEach(container => {
-            container.addEventListener('dragstart', (event) => {
+            container.addEventListener('touchstart', (event) => {
                 draggedElement = container;
-                event.dataTransfer.effectAllowed = 'move';
+                const touch = event.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                container.style.position = 'absolute';
+                container.style.zIndex = 1000;
             });
 
-            container.addEventListener('dragover', (event) => {
-                event.preventDefault();
-                event.dataTransfer.dropEffect = 'move';
+            container.addEventListener('touchmove', (event) => {
+                if (!draggedElement) return;
+                const touch = event.touches[0];
+                currentX = touch.clientX;
+                currentY = touch.clientY;
+                draggedElement.style.left = `${currentX - startX}px`;
+                draggedElement.style.top = `${currentY - startY}px`;
             });
 
-            container.addEventListener('drop', (event) => {
-                event.preventDefault();
-                if (draggedElement !== container) {
-                    // Swap the elements
-                    const parent = container.parentNode;
-                    const draggedIndex = Array.prototype.indexOf.call(parent.children, draggedElement);
-                    const targetIndex = Array.prototype.indexOf.call(parent.children, container);
-
+            container.addEventListener('touchend', (event) => {
+                if (!draggedElement) return;
+                const target = document.elementFromPoint(currentX, currentY);
+                if (target && target !== draggedElement && target.classList.contains('container')) {
+                    const parent = target.parentNode;
+                    const draggedIndex = [...parent.children].indexOf(draggedElement);
+                    const targetIndex = [...parent.children].indexOf(target);
                     if (draggedIndex < targetIndex) {
-                        parent.insertBefore(draggedElement, container.nextSibling);
+                        parent.insertBefore(draggedElement, target.nextSibling);
                     } else {
-                        parent.insertBefore(draggedElement, container);
+                        parent.insertBefore(draggedElement, target);
                     }
                 }
+                draggedElement.style.position = '';
+                draggedElement.style.zIndex = '';
+                draggedElement.style.left = '';
+                draggedElement.style.top = '';
+                draggedElement = null;
             });
 
-            container.addEventListener('dragend', () => {
-                draggedElement = null;
+            container.addEventListener('dragstart', (event) => {
+                event.preventDefault();
             });
         });
     </script>
