@@ -75,16 +75,24 @@ body {
 }
 
 .app-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
   font-size: 30px;
-  text-align: center;
   background-color: #f0f0f0;
-  padding: 20px;
+  border: 1px solid #ccc;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .app-icon:hover {
-  
   background-color: #ddd;
+}
+
+.app-icon.active {
+  transform: scale(1.5);
+  z-index: 10;
 }
