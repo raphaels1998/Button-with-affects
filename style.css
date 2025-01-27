@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #e0e0e0;
+  background-color: #f1f1f1;
 }
 
 .desktop {
@@ -10,15 +10,28 @@ body {
   flex-wrap: wrap;
   padding: 20px;
   gap: 20px;
+  position: relative;
 }
 
 .folder {
+  width: 80px;
+  height: 80px;
   text-align: center;
   cursor: pointer;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.folder:hover {
+  background-color: #e8e8e8;
 }
 
 .folder-icon {
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .folder-name {
@@ -32,11 +45,12 @@ body {
   position: absolute;
   top: 100px;
   left: 100px;
-  width: 300px;
+  width: 250px;
   padding: 20px;
-  border: 1px solid #ccc;
   background-color: white;
+  border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .folder-header {
@@ -54,18 +68,22 @@ body {
   cursor: pointer;
 }
 
-.folder-content ul {
-  list-style: none;
-  padding: 0;
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.folder-content li {
-  margin: 10px 0;
-  padding: 5px;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.folder-content li:hover {
+.app-icon {
+  font-size: 30px;
+  text-align: center;
   background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.app-icon:hover {
+  background-color: #ddd;
 }
