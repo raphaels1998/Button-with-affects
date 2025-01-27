@@ -48,15 +48,13 @@
     </div>
 
     <script>
-        const containers = document.querySelectorAll('.container');
-        let draggedContainer = null;
+        let draggedElement = null;
 
-        containers.forEach(container => {
+        document.querySelectorAll('.container').forEach(container => {
             container.addEventListener('dragstart', (event) => {
-                draggedContainer = container;
+                draggedElement = event.target;
                 event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/plain', container.innerHTML);
-                setTimeout(() => container.classList.add('hidden'), 0);
+                event.dataTransfer.setData('text/html', draggedElement.innerHTML);
             });
 
             container.addEventListener('dragover', (event) => {
@@ -66,18 +64,14 @@
 
             container.addEventListener('drop', (event) => {
                 event.preventDefault();
-                event.stopPropagation();
-
-                if (draggedContainer !== container) {
-                    draggedContainer.innerHTML = container.innerHTML;
-                    container.innerHTML = event.dataTransfer.getData('text/plain');
+                if (draggedElement !== event.target) {
+                    draggedElement.innerHTML = event.target.innerHTML;
+                    event.target.innerHTML = event.dataTransfer.getData('text/html');
                 }
-                container.classList.remove('hidden');
             });
 
             container.addEventListener('dragend', () => {
-                containers.forEach(c => c.classList.remove('hidden'));
-                draggedContainer = null;
+                draggedElement = null;
             });
         });
     </script>
