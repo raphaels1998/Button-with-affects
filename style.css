@@ -55,9 +55,13 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: transform 0.2s;
-    width: 100%;
-    aspect-ratio: 1; /* Ensure the card is square */
+    height: 180px; /* Set the height to match the folder-card */
     border-radius: 18px;
+    box-sizing: border-box; /* Ensure padding and border are included in the height and width */
+}
+
+.add-folder-card div {
+    font-size: 24px;
 }
 
 .add-folder-card:hover {
