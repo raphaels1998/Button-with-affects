@@ -64,8 +64,8 @@
             container.addEventListener('drop', (event) => {
                 event.preventDefault();
                 if (draggedElement !== container) {
-                    const parent = draggedElement.parentNode;
-                    const nextSibling = container.nextSibling === draggedElement ? container : container.nextSibling;
+                    const parent = container.parentNode;
+                    const nextSibling = container.nextElementSibling === draggedElement ? container : container.nextElementSibling;
                     parent.insertBefore(draggedElement, container);
                     parent.insertBefore(container, nextSibling);
                 }
