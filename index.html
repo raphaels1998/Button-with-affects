@@ -7,14 +7,19 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="desktop">
-    <!-- Folder -->
-    <div class="folder" onclick="toggleFolder()">
-      <div class="folder-icon">📂</div>
+  <div class="home-screen">
+    <!-- Folder Icon -->
+    <div class="folder" onclick="openFolder()">
+      <div class="folder-preview">
+        <div class="mini-app-icon">📱</div>
+        <div class="mini-app-icon">📧</div>
+        <div class="mini-app-icon">🌐</div>
+        <div class="mini-app-icon">📅</div>
+      </div>
     </div>
 
-    <!-- Folder Content (Hidden by Default) -->
-    <div id="folderContent" class="folder-content">
+    <!-- Expanded Folder Content -->
+    <div id="expandedFolder" class="expanded-folder">
       <div class="folder-header">
         <span>Folder</span>
         <button onclick="closeFolder()">X</button>
@@ -26,6 +31,9 @@
         <div class="app-icon">📅</div>
       </div>
     </div>
+
+    <!-- Dimmed Background -->
+    <div id="backgroundDim" class="background-dim" onclick="closeFolder()"></div>
   </div>
 
   <script src="script.js"></script>
