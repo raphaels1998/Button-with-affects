@@ -35,7 +35,7 @@ body {
 
 .folder-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust to prevent overlap */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ensure responsive grid */
     gap: 16px;
 }
 
@@ -47,12 +47,8 @@ body {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: 250px; /* Consistent height */
     transition: transform 0.2s;
-}
-
-.folder-card {
-    height: 250px; /* Adjusted height for better appearance */
 }
 
 .add-folder-card {
@@ -60,7 +56,6 @@ body {
     cursor: pointer;
     justify-content: center; /* Center the plus sign */
     align-items: center;
-    height: 250px; /* Same height as folder-card for consistency */
 }
 
 .add-folder-card:hover {
