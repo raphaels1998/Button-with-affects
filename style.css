@@ -39,21 +39,23 @@ body {
     gap: 16px;
 }
 
-.folder-card, .add-folder-card {
+.folder-card,
+.add-folder-card {
     background: white;
     border-radius: 18px;
     padding: 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     width: 100%;
-    aspect-ratio: 1;
+    height: 200px; /* Ensure consistent height */
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     transition: transform 0.2s;
 }
 
 .add-folder-card {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
 
@@ -62,7 +64,7 @@ body {
 }
 
 .add-folder-card:hover {
-    background: rgba(0,0,0,0.08);
+    background: rgba(0, 0, 0, 0.08);
     transform: scale(0.98);
 }
 
