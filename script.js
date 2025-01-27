@@ -1,5 +1,6 @@
-function openFolder(folderId) {
-  document.getElementById(folderId).style.display = 'block';
+function toggleFolder(folderId) {
+  const folder = document.getElementById(folderId);
+  folder.style.display = (folder.style.display === 'block') ? 'none' : 'block';
 }
 
 function closeFolder(folderId) {
