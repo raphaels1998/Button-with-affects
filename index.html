@@ -54,6 +54,7 @@
             container.addEventListener('dragstart', (event) => {
                 draggedElement = container;
                 event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/plain', '');
             });
 
             container.addEventListener('dragover', (event) => {
