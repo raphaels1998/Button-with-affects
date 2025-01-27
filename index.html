@@ -43,32 +43,32 @@
     </style>
 </head>
 <body>
-    <div class="container" id="container">
+    <div class="container">
         <input type="text" placeholder="Enter text here" />
     </div>
-    
-    <div class="container" id="container">
+    <div class="container">
         <input type="text" placeholder="Enter text here" />
     </div>
 
     <script>
-        const container = document.getElementById('container');
-        let isEnlarged = false;
+        const containers = document.querySelectorAll('.container');
+        let enlargedContainer = null;
 
-        container.addEventListener('click', (event) => {
-            event.stopPropagation();
-            isEnlarged = !isEnlarged;
-            if (isEnlarged) {
-                container.classList.add('enlarged');
-            } else {
-                container.classList.remove('enlarged');
-            }
+        containers.forEach(container => {
+            container.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (enlargedContainer && enlargedContainer !== container) {
+                    enlargedContainer.classList.remove('enlarged');
+                }
+                container.classList.toggle('enlarged');
+                enlargedContainer = container.classList.contains('enlarged') ? container : null;
+            });
         });
 
         document.addEventListener('click', () => {
-            if (isEnlarged) {
-                container.classList.remove('enlarged');
-                isEnlarged = false;
+            if (enlargedContainer) {
+                enlargedContainer.classList.remove('enlarged');
+                enlargedContainer = null;
             }
         });
     </script>
