@@ -1,176 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS Style Lists</title>
-  <style>
-    :root {
-      --blue: #007AFF;
-      --gray: #F5F5F7;
-      --text: #1D1D1F;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Style Lists</title>
+    <style>
+        :root {
+            --blue: #007AFF;
+            --gray: #F5F5F7;
+            --text: #1D1D1F;
+        }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--gray);
-      margin: 0;
-      padding: 20px;
-      color: var(--text);
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
 
-    .tab-bar {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+        .tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
 
-    .tab-button {
-      padding: 12px 24px;
-      background: none;
-      border: none;
-      border-radius: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+        .tab-button {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-    .tab-button.active {
-      background: rgba(0, 122, 255, 0.1);
-      color: var(--blue);
-    }
+        .tab-button.active {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--blue);
+        }
 
-    .folder-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
+        .folder-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
 
-    .folder-card {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
-    }
+        .folder-card {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            min-height: 180px;
+        }
 
-    .folder-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-    }
+        .add-folder-card {
+            background: rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-    .add-folder-btn {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      width: 56px;
-      height: 56px;
-      background: var(--blue);
-      border: none;
-      border-radius: 50%;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0,122,255,0.3);
-      transition: transform 0.2s;
-    }
+        .add-folder-card:hover {
+            background: rgba(0,0,0,0.08);
+            transform: scale(0.98);
+        }
 
-    .item {
-      display: grid;
-      grid-template-columns: 1fr 60px 30px;
-      gap: 12px;
-      padding: 12px;
-      margin-bottom: 8px;
-      background: rgba(0,0,0,0.02);
-      border-radius: 10px;
-    }
+        .folder-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
 
-    .item input {
-      border: none;
-      background: none;
-      padding: 8px;
-      font-size: 15px;
-    }
+        .folder-name {
+            font-weight: 500;
+            font-size: 17px;
+            border: none;
+            outline: none;
+            background: none;
+            width: 100%;
+        }
 
-    .custom-checkbox {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #CCC;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
+        .item-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
 
-    .add-item-btn {
-      width: 100%;
-      padding: 12px;
-      background: rgba(0,0,0,0.05);
-      border: none;
-      border-radius: 10px;
-      margin-top: 12px;
-      cursor: pointer;
-    }
-  </style>
+        .item-input {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 8px;
+        }
+
+        .quantity-input {
+            width: 50px;
+            border: none;
+            background: none;
+            padding: 8px;
+            text-align: right;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox.checked {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .checkbox.checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+        }
+
+        .shopping-list {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+        }
+    </style>
 </head>
 <body>
-  <div class="tab-bar">
-    <button class="tab-button active">Master List</button>
-    <button class="tab-button">Shopping List</button>
-  </div>
-
-  <div class="folder-grid">
-    <!-- Default Folder -->
-    <div class="folder-card">
-      <div class="folder-header">
-        <h2 contenteditable="true">Groceries</h2>
-      </div>
-      <div class="item">
-        <input type="text" placeholder="Item">
-        <input type="number" value="1" min="1">
-        <div class="custom-checkbox"></div>
-      </div>
-      <button class="add-item-btn">Add Item</button>
+    <div class="tab-bar">
+        <button class="tab-button active" onclick="switchTab('master')">Master List</button>
+        <button class="tab-button" onclick="switchTab('shopping')">Shopping List</button>
     </div>
-  </div>
 
-  <button class="add-folder-btn">+</button>
-
-  <script>
-    // Add New Folder
-    document.querySelector('.add-folder-btn').addEventListener('click', () => {
-      const newFolder = document.createElement('div');
-      newFolder.className = 'folder-card';
-      newFolder.innerHTML = `
-        <div class="folder-header">
-          <h2 contenteditable="true">New Folder</h2>
+    <div id="master-tab" class="tab-content active">
+        <div class="folder-grid">
+            <div class="folder-card">
+                <div class="folder-header">
+                    <input class="folder-name" value="Groceries">
+                </div>
+                <div class="item-row">
+                    <input class="item-input" placeholder="Item">
+                    <input class="quantity-input" type="number" value="1" min="1">
+                    <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                </div>
+            </div>
+            <div class="add-folder-card" onclick="addFolder()">
+                <div style="font-size: 24px;">+</div>
+            </div>
         </div>
-        <div class="item">
-          <input type="text" placeholder="Item">
-          <input type="number" value="1" min="1">
-          <div class="custom-checkbox"></div>
-        </div>
-        <button class="add-item-btn">Add Item</button>
-      `;
-      document.querySelector('.folder-grid').appendChild(newFolder);
-    });
+    </div>
 
-    // Add New Item
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('add-item-btn')) {
-        const newItem = document.createElement('div');
-        newItem.className = 'item';
-        newItem.innerHTML = `
-          <input type="text" placeholder="Item">
-          <input type="number" value="1" min="1">
-          <div class="custom-checkbox"></div>
-        `;
-        e.target.parentNode.insertBefore(newItem, e.target);
-      }
-    });
-  </script>
+    <div id="shopping-tab" class="tab-content">
+        <div class="shopping-list" id="shopping-list-content">
+            <!-- Shopping list items will be added here -->
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).style.display = 'block';
+            document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+        }
+
+        function addFolder() {
+            const folderGrid = document.querySelector('.folder-grid');
+            const newFolder = document.createElement('div');
+            newFolder.className = 'folder-card';
+            newFolder.innerHTML = `
+                <div class="folder-header">
+                    <input class="folder-name" value="New Folder">
+                </div>
+                <div class="item-row">
+                    <input class="item-input" placeholder="Item">
+                    <input class="quantity-input" type="number" value="1" min="1">
+                    <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                </div>
+            `;
+            folderGrid.insertBefore(newFolder, folderGrid.lastElementChild);
+        }
+
+        function toggleCheckbox(checkbox) {
+            checkbox.classList.toggle('checked');
+            const itemRow = checkbox.closest('.item-row');
+            const itemName = itemRow.querySelector('.item-input').value;
+            const quantity = itemRow.querySelector('.quantity-input').value;
+
+            if (checkbox.classList.contains('checked')) {
+                addToShoppingList(itemName, quantity);
+            } else {
+                removeFromShoppingList(itemName, quantity);
+            }
+        }
+
+        function addToShoppingList(name, quantity) {
+            const listItem = document.createElement('div');
+            listItem.className = 'item-row';
+            listItem.innerHTML = `
+                <span>${name} (${quantity})</span>
+                <div class="checkbox checked" onclick="removeFromShoppingList(this)"></div>
+            `;
+            document.getElementById('shopping-list-content').appendChild(listItem);
+        }
+
+        function removeFromShoppingList(item) {
+            item.closest('.item-row').remove();
+        }
+    </script>
 </body>
 </html>
