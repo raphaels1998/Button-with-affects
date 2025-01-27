@@ -135,6 +135,14 @@
             padding: 16px;
             overflow: hidden;
         }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -170,9 +178,9 @@
 
     <script>
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).style.display = 'block';
+            document.getElementById(`${tabName}-tab`).classList.add('active');
             document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
         }
 
