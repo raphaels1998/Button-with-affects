@@ -49,7 +49,6 @@ body {
     height: 250px; /* Adjusted height for better appearance */
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Ensure items don't overflow the card */
     transition: transform 0.2s;
 }
 
@@ -85,7 +84,6 @@ body {
     flex: 1;
     overflow-y: auto; /* Allow vertical scrolling if items overflow */
     width: 100%;
-    padding-right: 8px; /* Add some padding for better appearance */
 }
 
 .item-row {
