@@ -57,10 +57,7 @@ body {
 .add-folder-card {
     background: rgba(0, 0, 0, 0.05);
     cursor: pointer;
-}
-
-.add-folder-card div {
-    font-size: 24px;
+    justify-content: center; /* Center the plus sign */
 }
 
 .add-folder-card:hover {
@@ -71,8 +68,8 @@ body {
 .folder-header {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
     width: 100%; /* Ensure full width for the header */
+    margin-bottom: 12px;
 }
 
 .folder-name {
