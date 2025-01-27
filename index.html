@@ -10,9 +10,9 @@
             margin: 0;
             padding: 0;
             display: flex;
-            /*justify-content: center;
+            justify-content: center;
             align-items: center;
-            height: 100vh;*/
+            height: 100vh;
             background-color: #f0f0f0;
         }
 
@@ -25,6 +25,11 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .container.enlarged {
+            transform: scale(2); /* Double the size */
         }
 
         input {
@@ -38,8 +43,30 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="container">
         <input type="text" placeholder="Enter text here" />
     </div>
+
+    <script>
+        const container = document.getElementById('container');
+        let isEnlarged = false;
+
+        container.addEventListener('click', (event) => {
+            event.stopPropagation();
+            isEnlarged = !isEnlarged;
+            if (isEnlarged) {
+                container.classList.add('enlarged');
+            } else {
+                container.classList.remove('enlarged');
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (isEnlarged) {
+                container.classList.remove('enlarged');
+                isEnlarged = false;
+            }
+        });
+    </script>
 </body>
 </html>
