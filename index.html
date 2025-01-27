@@ -14,26 +14,27 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-            flex-wrap: wrap;  /* Allow containers to wrap */
+            flex-wrap: wrap; /* Allow containers to wrap */
         }
 
         .container {
             display: grid;
-            grid-template-columns: 1fr;  /* One column */
-            gap: 16px;  /* Spacing between inputs */
+            grid-template-columns: 1fr; /* One column */
+            gap: 16px; /* Spacing between inputs */
             padding: 20px;
-            width: 150px;  /* Width of the container */
+            width: 150px; /* Width of the container */
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
             cursor: grab;
-            touch-action: none;  /* Prevent touch events from interfering with drag-and-drop */
+            touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
             position: relative;
+            user-select: none; /* Prevent text selection */
         }
 
         .dragging {
-            opacity: 0.5;  /* Visual feedback for dragging */
+            opacity: 0.5; /* Visual feedback for dragging */
             position: absolute;
             z-index: 1000;
         }
@@ -51,7 +52,7 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
-            width: 100%;  /* Make inputs fill container width */
+            width: 100%; /* Make inputs fill container width */
         }
     </style>
 </head>
