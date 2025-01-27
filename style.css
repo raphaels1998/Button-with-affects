@@ -33,11 +33,17 @@ body {
     color: var(--blue);
 }
 
+
 .folder-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ensure responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust column width */
     gap: 16px;
+    max-width: 800px; /* Limit overall width */
+    max-height: 600px; /* Limit overall height */
+    overflow-y: auto; /* Allow scrolling if height is exceeded */
+    margin: 0 auto; /* Center the grid horizontally */
 }
+
 
 .folder-card,
 .add-folder-card {
