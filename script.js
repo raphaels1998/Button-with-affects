@@ -1,19 +1,39 @@
-function toggleFolder(folderId) {
-  const folder = document.getElementById(folderId);
-  // Toggle the display of the folder content
-  if (folder.style.display === 'block') {
-    folder.style.display = 'none';
+let isFolderOpen = false;
+
+function toggleFolder() {
+  const folderContent = document.getElementById('folderContent');
+  const folder = document.querySelector('.folder');
+  
+  if (!isFolderOpen) {
+    // Open folder
+    folder.classList.add('active');
+    folderContent.style.display = 'block';
+    isFolderOpen = true;
   } else {
-    folder.style.display = 'block';
+    // Close folder
+    folder.classList.remove('active');
+    folderContent.style.display = 'none';
+    isFolderOpen = false;
   }
 }
 
-function closeFolder(folderId) {
-  const folder = document.getElementById(folderId);
-  folder.style.display = 'none';
-}
+// Close folder when clicking outside
+document.addEventListener('click', function(event) {
+  const folderContent = document.getElementById('folderContent');
+  const folder = document.querySelector('.folder');
 
-function toggleSize(appIcon) {
-  // Toggle the active class to enlarge or shrink the app icon
-  appIcon.classList.toggle('active');
+  if (isFolderOpen && !folder.contains(event.target) && !folderContent.contains(event.target)) {
+    folder.classList.remove('active');
+    folderContent.style.display = 'none';
+    isFolderOpen = false;
+  }
+});
+
+function closeFolder() {
+  const folderContent = document.getElementById('folderContent');
+  const folder = document.querySelector('.folder');
+
+  folder.classList.remove('active');
+  folderContent.style.display = 'none';
+  isFolderOpen = false;
 }
