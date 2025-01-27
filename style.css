@@ -50,11 +50,11 @@ body {
 .add-folder-card {
     background: white;
     border-radius: 18px;
-    padding: 16px;
+    padding: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    height: 250px; /* Consistent height */
+    height: 125px; /* Consistent height */
     transition: transform 0.2s;
 }
 
