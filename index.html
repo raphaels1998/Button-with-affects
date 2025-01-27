@@ -14,6 +14,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            flex-wrap: wrap; /* Allow containers to wrap */
         }
 
         .container {
@@ -35,7 +36,7 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
-            width: 80%; /* Make inputs fill container width */
+            width: 100%; /* Make inputs fill container width */
         }
 
     </style>
@@ -60,6 +61,8 @@
                 startY = touch.clientY;
                 container.style.position = 'absolute';
                 container.style.zIndex = 1000;
+                container.style.left = `${startX - container.offsetWidth / 2}px`;
+                container.style.top = `${startY - container.offsetHeight / 2}px`;
             });
 
             container.addEventListener('touchmove', (event) => {
@@ -67,8 +70,8 @@
                 const touch = event.touches[0];
                 currentX = touch.clientX;
                 currentY = touch.clientY;
-                draggedElement.style.left = `${currentX - startX}px`;
-                draggedElement.style.top = `${currentY - startY}px`;
+                draggedElement.style.left = `${currentX - startX + draggedElement.offsetLeft}px`;
+                draggedElement.style.top = `${currentY - startY + draggedElement.offsetTop}px`;
             });
 
             container.addEventListener('touchend', (event) => {
@@ -89,10 +92,6 @@
                 draggedElement.style.left = '';
                 draggedElement.style.top = '';
                 draggedElement = null;
-            });
-
-            container.addEventListener('dragstart', (event) => {
-                event.preventDefault();
             });
         });
     </script>
