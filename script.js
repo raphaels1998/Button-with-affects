@@ -4,5 +4,6 @@ function toggleFolder(folderId) {
 }
 
 function closeFolder(folderId) {
+  
   document.getElementById(folderId).style.display = 'none';
 }
