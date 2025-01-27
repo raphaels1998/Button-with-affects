@@ -1,13 +1,13 @@
-// Expand/Collapse Folders
+// Expand/Collapse Folders with Animation
 document.querySelectorAll('.expand-btn').forEach(button => {
   button.addEventListener('click', () => {
     const folderContent = button.closest('.folder').querySelector('.folder-content');
     folderContent.classList.toggle('expanded');
-    button.textContent = folderContent.classList.contains('expanded') ? '▲' : '▼';
+    button.classList.toggle('rotated');
   });
 });
 
-// Add New Item to Folder
+// Add New Item to Folder (no changes)
 document.querySelectorAll('.add-item-btn').forEach(button => {
   button.addEventListener('click', () => {
     const folderContent = button.closest('.folder-content');
@@ -22,7 +22,7 @@ document.querySelectorAll('.add-item-btn').forEach(button => {
   });
 });
 
-// Add New Folder
+// Add New Folder (no changes)
 document.querySelector('.add-folder-btn').addEventListener('click', () => {
   const masterListTab = document.getElementById('master-list-tab');
   const newFolder = document.createElement('div');
@@ -48,7 +48,7 @@ document.querySelector('.add-folder-btn').addEventListener('click', () => {
   newFolder.querySelector('.expand-btn').addEventListener('click', () => {
     const folderContent = newFolder.querySelector('.folder-content');
     folderContent.classList.toggle('expanded');
-    newFolder.querySelector('.expand-btn').textContent = folderContent.classList.contains('expanded') ? '▲' : '▼';
+    newFolder.querySelector('.expand-btn').classList.toggle('rotated');
   });
 
   newFolder.querySelector('.add-item-btn').addEventListener('click', () => {
@@ -64,7 +64,7 @@ document.querySelector('.add-folder-btn').addEventListener('click', () => {
   });
 });
 
-// Update Shopping List
+// Update Shopping List (no changes)
 document.addEventListener('change', (e) => {
   if (e.target.classList.contains('add-to-list')) {
     const shoppingList = document.querySelector('.shopping-list');
