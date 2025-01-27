@@ -1,116 +1,110 @@
-/* General Styles */
 body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f5f5f7;
   margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f1f1f1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  padding: 20px;
+  color: #1d1d1f;
 }
 
-.home-screen {
+.container {
   display: flex;
   gap: 20px;
-  position: relative;
 }
 
-/* Folder Icon */
-.folder {
-  width: 80px;
-  height: 80px;
-  background-color: #e8e8e8;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-.folder-preview {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3px;
-}
-
-.mini-app-icon {
-  width: 30px;
-  height: 30px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-}
-
-/* Expanded Folder */
-.expanded-folder {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
+.tab {
+  background-color: #ffffff;
+  border-radius: 12px;
   padding: 20px;
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.folder {
+  margin-bottom: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .folder-header {
   display: flex;
   justify-content: space-between;
-  font-size: 18px;
-  margin-bottom: 15px;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f7;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.folder-header button {
-  background: red;
+.folder-name {
+  font-weight: 500;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.folder-content {
+  padding: 10px;
+  display: none;
+}
+
+.folder-content.expanded {
+  display: block;
+}
+
+.item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.item input[type="text"],
+.item input[type="number"] {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+.item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.add-item-btn,
+.add-folder-btn {
+  width: 100%;
+  padding: 8px;
+  background-color: #007aff;
   color: white;
   border: none;
-  padding: 5px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  margin-top: 8px;
 }
 
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.add-item-btn:hover,
+.add-folder-btn:hover {
+  background-color: #0063cc;
 }
 
-.app-icon {
-  width: 60px;
-  height: 60px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+.shopping-list {
+  margin-top: 16px;
+}
+
+.shopping-list .item {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 30px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.app-icon:hover {
-  transform: scale(1.1);
-}
-
-/* Background Dim Effect */
-.background-dim {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 99%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 5;
+  gap: 8px;
+  padding: 8px;
+  background-color: #f5f5f7;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
