@@ -1,41 +1,55 @@
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
   background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.desktop {
+.home-screen {
   display: flex;
-  flex-wrap: wrap;
-  padding: 20px;
-  
   gap: 20px;
   position: relative;
 }
 
+/* Folder Icon */
 .folder {
   width: 80px;
   height: 80px;
-  text-align: center;
-  cursor: pointer;
-  background-color: #f8f8f8;
-  border-radius: 10px;
+  background-color: #e8e8e8;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #ccc;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.folder:hover {
-  background-color: #e8e8e8;
+.folder-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
 }
 
-.folder-icon {
-  font-size: 40px;
+.mini-app-icon {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 
-.folder-content {
+/* Expanded Folder */
+.expanded-folder {
   display: none;
   position: fixed;
   top: 50%;
@@ -44,18 +58,16 @@ body {
   width: 300px;
   padding: 20px;
   background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   z-index: 10;
-  box-sizing: border-box;
 }
 
 .folder-header {
   display: flex;
   justify-content: space-between;
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .folder-header button {
@@ -63,6 +75,7 @@ body {
   color: white;
   border: none;
   padding: 5px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -73,30 +86,31 @@ body {
 }
 
 .app-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  font-size: 30px;
+  width: 60px;
+  height: 60px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 .app-icon:hover {
-  background-color: #ddd;
+  transform: scale(1.1);
 }
 
-.folder.active {
-  width: 200px;
-  height: 200px;
-  background-color: #dcdcdc;
-  transform: scale(1.5);
-}
-
-.folder.active .folder-icon {
-  font-size: 50px;
+/* Background Dim Effect */
+.background-dim {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
