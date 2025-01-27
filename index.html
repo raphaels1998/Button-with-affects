@@ -18,10 +18,12 @@
                 <div class="folder-header">
                     <input class="folder-name" value="Groceries">
                 </div>
-                <div class="item-row">
-                    <input class="item-input" placeholder="Item">
-                    <input class="quantity-input" type="number" value="1" min="1">
-                    <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                <div class="item-list">
+                    <div class="item-row">
+                        <input class="item-input" placeholder="Item">
+                        <input class="quantity-input" type="number" value="1" min="1">
+                        <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                    </div>
                 </div>
                 <button onclick="addItem(this)">Add Item</button>
             </div>
@@ -53,10 +55,12 @@
                 <div class="folder-header">
                     <input class="folder-name" value="New Folder">
                 </div>
-                <div class="item-row">
-                    <input class="item-input" placeholder="Item">
-                    <input class="quantity-input" type="number" value="1" min="1">
-                    <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                <div class="item-list">
+                    <div class="item-row">
+                        <input class="item-input" placeholder="Item">
+                        <input class="quantity-input" type="number" value="1" min="1">
+                        <div class="checkbox" onclick="toggleCheckbox(this)"></div>
+                    </div>
                 </div>
                 <button onclick="addItem(this)">Add Item</button>
             `;
@@ -65,6 +69,7 @@
 
         function addItem(button) {
             const folderCard = button.closest('.folder-card');
+            const itemList = folderCard.querySelector('.item-list');
             const newItemRow = document.createElement('div');
             newItemRow.className = 'item-row';
             newItemRow.innerHTML = `
@@ -72,7 +77,7 @@
                 <input class="quantity-input" type="number" value="1" min="1">
                 <div class="checkbox" onclick="toggleCheckbox(this)"></div>
             `;
-            folderCard.insertBefore(newItemRow, button);
+            itemList.appendChild(newItemRow);
         }
 
         function toggleCheckbox(checkbox) {
