@@ -40,15 +40,6 @@
       color: var(--blue);
     }
 
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
     .folder-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -69,53 +60,37 @@
       margin-bottom: 16px;
     }
 
-    .folder-icon {
-      width: 40px;
-      height: 40px;
+    .add-folder-btn {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 56px;
+      height: 56px;
       background: var(--blue);
-      border-radius: 12px;
-      margin-right: 12px;
-    }
-
-    .folder-name {
-      font-weight: 500;
-      font-size: 17px;
       border: none;
-      outline: none;
-      background: none;
-      width: 100%;
-    }
-
-    .folder-items {
-      border-top: 1px solid #EEE;
-      padding-top: 12px;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,122,255,0.3);
+      transition: transform 0.2s;
     }
 
     .item {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 60px 30px;
       gap: 12px;
       padding: 12px;
       margin-bottom: 8px;
       background: rgba(0,0,0,0.02);
       border-radius: 10px;
-      animation: slideIn 0.3s ease;
     }
 
-    .item input[type="text"],
-    .item input[type="number"] {
+    .item input {
       border: none;
       background: none;
       padding: 8px;
       font-size: 15px;
-      flex: 1;
-    }
-
-    .item input[type="text"]:focus,
-    .item input[type="number"]:focus {
-      outline: none;
-      background: rgba(0,0,0,0.03);
-      border-radius: 6px;
     }
 
     .custom-checkbox {
@@ -130,23 +105,6 @@
       transition: all 0.2s;
     }
 
-    .custom-checkbox.checked {
-      background: var(--blue);
-      border-color: var(--blue);
-    }
-
-    .custom-checkbox svg {
-      width: 14px;
-      height: 14px;
-      stroke: white;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .custom-checkbox.checked svg {
-      opacity: 1;
-    }
-
     .add-item-btn {
       width: 100%;
       padding: 12px;
@@ -155,130 +113,62 @@
       border-radius: 10px;
       margin-top: 12px;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .add-item-btn:hover {
-      background: rgba(0,0,0,0.08);
-    }
-
-    .shopping-list .item {
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-10px); }
-      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
 <body>
   <div class="tab-bar">
-    <button class="tab-button active" onclick="switchTab('master')">Master List</button>
-    <button class="tab-button" onclick="switchTab('shopping')">Shopping List</button>
+    <button class="tab-button active">Master List</button>
+    <button class="tab-button">Shopping List</button>
   </div>
 
-  <!-- Master List Tab -->
-  <div id="master-tab" class="tab-content active">
-    <div class="folder-grid">
-      <div class="folder-card">
-        <div class="folder-header">
-          <div class="folder-icon"></div>
-          <input class="folder-name" value="Groceries">
-        </div>
-        <div class="folder-items">
-          <div class="item">
-            <input type="text" placeholder="Item" value="Milk">
-            <input type="number" value="2" min="1">
-            <div class="custom-checkbox" onclick="toggleCheckbox(this)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <button class="add-item-btn" onclick="addItem(this)">Add Item</button>
+  <div class="folder-grid">
+    <!-- Default Folder -->
+    <div class="folder-card">
+      <div class="folder-header">
+        <h2 contenteditable="true">Groceries</h2>
       </div>
+      <div class="item">
+        <input type="text" placeholder="Item">
+        <input type="number" value="1" min="1">
+        <div class="custom-checkbox"></div>
+      </div>
+      <button class="add-item-btn">Add Item</button>
     </div>
   </div>
 
-  <!-- Shopping List Tab -->
-  <div id="shopping-tab" class="tab-content">
-    <div class="shopping-list"></div>
-  </div>
+  <button class="add-folder-btn">+</button>
 
   <script>
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`${tabName}-tab`).classList.add('active');
-      document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
-    }
-
-    function addItem(btn) {
-      const folder = btn.closest('.folder-card');
-      const itemsContainer = folder.querySelector('.folder-items');
-      
-      const newItem = document.createElement('div');
-      newItem.className = 'item';
-      newItem.innerHTML = `
-        <input type="text" placeholder="Item">
-        <input type="number" value="1" min="1">
-        <div class="custom-checkbox" onclick="toggleCheckbox(this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-          </svg>
+    // Add New Folder
+    document.querySelector('.add-folder-btn').addEventListener('click', () => {
+      const newFolder = document.createElement('div');
+      newFolder.className = 'folder-card';
+      newFolder.innerHTML = `
+        <div class="folder-header">
+          <h2 contenteditable="true">New Folder</h2>
         </div>
+        <div class="item">
+          <input type="text" placeholder="Item">
+          <input type="number" value="1" min="1">
+          <div class="custom-checkbox"></div>
+        </div>
+        <button class="add-item-btn">Add Item</button>
       `;
-      itemsContainer.appendChild(newItem);
-      newItem.querySelector('input[type="text"]').focus();
-    }
-
-    function toggleCheckbox(checkbox) {
-      checkbox.classList.toggle('checked');
-      const item = checkbox.closest('.item');
-      const name = item.querySelector('input[type="text"]').value;
-      const qty = item.querySelector('input[type="number"]').value;
-      
-      if (checkbox.classList.contains('checked')) {
-        const shoppingItem = document.createElement('div');
-        shoppingItem.className = 'item';
-        shoppingItem.innerHTML = `
-          <span>${name} (${qty})</span>
-          <div class="custom-checkbox checked" onclick="removeFromList(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </div>
-        `;
-        document.querySelector('.shopping-list').appendChild(shoppingItem);
-      } else {
-        Array.from(document.querySelector('.shopping-list').children).forEach(li => {
-          if (li.textContent.includes(`${name} (${qty})`)) li.remove();
-        });
-      }
-    }
-
-    function removeFromList(checkbox) {
-      checkbox.closest('.item').remove();
-    }
-
-    // Add new folder
-    document.addEventListener('click', function(e) {
-      if (e.target.classList.contains('folder-name')) {
-        e.target.select();
-      }
+      document.querySelector('.folder-grid').appendChild(newFolder);
     });
 
-    document.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter' && e.target.classList.contains('folder-name')) {
-        e.target.blur();
+    // Add New Item
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-item-btn')) {
+        const newItem = document.createElement('div');
+        newItem.className = 'item';
+        newItem.innerHTML = `
+          <input type="text" placeholder="Item">
+          <input type="number" value="1" min="1">
+          <div class="custom-checkbox"></div>
+        `;
+        e.target.parentNode.insertBefore(newItem, e.target);
       }
     });
   </script>
