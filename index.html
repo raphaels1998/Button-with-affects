@@ -3,28 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iPhone-Like Folders</title>
+  <title>iPhone Folder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="desktop">
     <!-- Folder -->
-    <div class="folder" onclick="toggleFolder('folder1')">
-      <div class="folder-icon">📁</div>
-      <p class="folder-name">Folder 1</p>
+    <div class="folder" onclick="toggleFolder()">
+      <div class="folder-icon">📂</div>
     </div>
 
     <!-- Folder Content (Hidden by Default) -->
-    <div id="folder1" class="folder-content">
+    <div id="folderContent" class="folder-content">
       <div class="folder-header">
-        <span>Folder 1</span>
-        <button onclick="closeFolder('folder1')">X</button>
+        <span>Folder</span>
+        <button onclick="closeFolder()">X</button>
       </div>
       <div class="folder-grid">
-        <div class="app-icon" onclick="toggleSize(this)">📱</div>
-        <div class="app-icon" onclick="toggleSize(this)">📧</div>
-        <div class="app-icon" onclick="toggleSize(this)">🌐</div>
-        <div class="app-icon" onclick="toggleSize(this)">📅</div>
+        <div class="app-icon">📱</div>
+        <div class="app-icon">📧</div>
+        <div class="app-icon">🌐</div>
+        <div class="app-icon">📅</div>
       </div>
     </div>
   </div>
