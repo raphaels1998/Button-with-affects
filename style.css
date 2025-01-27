@@ -8,7 +8,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--gray);
     margin: 0;
-    padding: 21px;
+    padding: 20px;
     color: var(--text);
 }
 
@@ -39,29 +39,22 @@ body {
     gap: 16px;
 }
 
-.folder-card {
+.folder-card, .add-folder-card {
     background: white;
     border-radius: 18px;
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-    min-height: 180px;
-    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
 }
 
 .add-folder-card {
     background: rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s;
-    height: 180px; /* Set the height to match the folder-card */
-    border-radius: 18px;
-    box-sizing: border-box; /* Ensure padding and border are included in the height and width */
-}
-
-.add-folder-card div {
-    font-size: 24px;
 }
 
 .add-folder-card:hover {
