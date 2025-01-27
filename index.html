@@ -27,8 +27,13 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            cursor: move;
+            cursor: grab;
             touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
+            position: relative;
+        }
+
+        .dragging {
+            opacity: 0.5; /* Visual feedback for dragging */
         }
 
         input {
@@ -56,27 +61,27 @@
         document.querySelectorAll('.container').forEach(container => {
             container.addEventListener('touchstart', (event) => {
                 draggedElement = container;
+                container.classList.add('dragging');
                 const touch = event.touches[0];
-                startX = touch.clientX;
-                startY = touch.clientY;
+                startX = touch.clientX - container.offsetLeft;
+                startY = touch.clientY - container.offsetTop;
                 container.style.position = 'absolute';
                 container.style.zIndex = 1000;
-                container.style.left = `${startX - container.offsetWidth / 2}px`;
-                container.style.top = `${startY - container.offsetHeight / 2}px`;
             });
 
             container.addEventListener('touchmove', (event) => {
                 if (!draggedElement) return;
                 const touch = event.touches[0];
-                currentX = touch.clientX;
-                currentY = touch.clientY;
-                draggedElement.style.left = `${currentX - startX + draggedElement.offsetLeft}px`;
-                draggedElement.style.top = `${currentY - startY + draggedElement.offsetTop}px`;
+                currentX = touch.clientX - startX;
+                currentY = touch.clientY - startY;
+                draggedElement.style.left = `${currentX}px`;
+                draggedElement.style.top = `${currentY}px`;
             });
 
             container.addEventListener('touchend', (event) => {
                 if (!draggedElement) return;
-                const target = document.elementFromPoint(currentX, currentY);
+                const touch = event.changedTouches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
                 if (target && target !== draggedElement && target.classList.contains('container')) {
                     const parent = target.parentNode;
                     const draggedIndex = [...parent.children].indexOf(draggedElement);
@@ -91,6 +96,7 @@
                 draggedElement.style.zIndex = '';
                 draggedElement.style.left = '';
                 draggedElement.style.top = '';
+                draggedElement.classList.remove('dragging');
                 draggedElement = null;
             });
         });
