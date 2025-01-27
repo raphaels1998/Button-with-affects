@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master List and Shopping List</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folders on Web</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="tabs">
-        <button class="tab-button" onclick="openTab(event, 'MasterList')">Master List</button>
-        <button class="tab-button" onclick="openTab(event, 'ShoppingList')">Shopping List</button>
+  <div class="desktop">
+    <!-- Folder -->
+    <div class="folder" onclick="openFolder('folder1')">
+      <div class="folder-icon">📁</div>
+      <p class="folder-name">Folder 1</p>
     </div>
 
-    <div id="MasterList" class="tab-content">
-        <div class="item" onclick="expandItem(this)">
-            <div class="item-content">
-                <input type="text" placeholder="Product Name">
-                <input type="number" placeholder="Quantity">
-                <button class="close-btn" onclick="minimizeItem(event, this)">x</button>
-            </div>
-        </div>
-        <!-- Add more items as needed -->
+    <!-- Folder Content (Hidden by Default) -->
+    <div id="folder1" class="folder-content">
+      <div class="folder-header">
+        <span>Folder 1</span>
+        <button onclick="closeFolder('folder1')">X</button>
+      </div>
+      <ul>
+        <li>App 1</li>
+        <li>App 2</li>
+        <li>App 3</li>
+      </ul>
     </div>
+  </div>
 
-    <div id="ShoppingList" class="tab-content">
-        <ul id="shopping-list"></ul>
-    </div>
-
-    <script src="scripts.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
