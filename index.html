@@ -3,111 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Style Lists</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Container Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr; /* One column */
+            gap: 16px; /* Spacing between inputs */
+            padding: 20px;
+            width: 300px; /* Width of the container */
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%; /* Make inputs fill container width */
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #005BB5;
+        }
+    </style>
 </head>
 <body>
-    <div class="tab-bar">
-        <button class="tab-button active" onclick="switchTab('master')">Master List</button>
-        <button class="tab-button" onclick="switchTab('shopping')">Shopping List</button>
+    <div class="container">
+        <input type="text" placeholder="Enter text here" />
+        <input type="text" placeholder="Another input" />
+        <button>Submit</button>
     </div>
-
-    <div id="master-tab" class="tab-content active">
-        <div class="folder-grid">
-            <div class="folder-card">
-                <div class="folder-header">
-                    <input class="folder-name" value="Groceries">
-                </div>
-                <div class="item-list">
-                    <div class="item-row">
-                        <input class="item-input" placeholder="Item">
-                        <input class="quantity-input" type="number" value="1" min="1">
-                        <div class="checkbox" onclick="toggleCheckbox(this)"></div>
-                    </div>
-                </div>
-                <button onclick="addItem(this)">Add Item</button>
-            </div>
-           
-        </div>
-    </div>
-    
-     <div class="add-folder-card" onclick="addFolder()">
-                <div style="font-size: 24px;">+</div>
-    </div>
-
-    <div id="shopping-tab" class="tab-content">
-        <div class="shopping-list" id="shopping-list-content">
-            <!-- Shopping list items will be added here -->
-        </div>
-    </div>
-
-    <script>
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-            document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
-        }
-
-        function addFolder() {
-            const folderGrid = document.querySelector('.folder-grid');
-            const newFolder = document.createElement('div');
-            newFolder.className = 'folder-card';
-            newFolder.innerHTML = `
-                <div class="folder-header">
-                    <input class="folder-name" value="New Folder">
-                </div>
-                <div class="item-list">
-                    <div class="item-row">
-                        <input class="item-input" placeholder="Item">
-                        <input class="quantity-input" type="number" value="1" min="1">
-                        <div class="checkbox" onclick="toggleCheckbox(this)"></div>
-                    </div>
-                </div>
-                <button onclick="addItem(this)">Add Item</button>
-            `;
-            folderGrid.insertBefore(newFolder, folderGrid.lastElementChild);
-        }
-
-        function addItem(button) {
-            const folderCard = button.closest('.folder-card');
-            const itemList = folderCard.querySelector('.item-list');
-            const newItemRow = document.createElement('div');
-            newItemRow.className = 'item-row';
-            newItemRow.innerHTML = `
-                <input class="item-input" placeholder="Item">
-                <input class="quantity-input" type="number" value="1" min="1">
-                <div class="checkbox" onclick="toggleCheckbox(this)"></div>
-            `;
-            itemList.appendChild(newItemRow);
-        }
-
-        function toggleCheckbox(checkbox) {
-            checkbox.classList.toggle('checked');
-            const itemRow = checkbox.closest('.item-row');
-            const itemName = itemRow.querySelector('.item-input').value;
-            const quantity = itemRow.querySelector('.quantity-input').value;
-
-            if (checkbox.classList.contains('checked')) {
-                addToShoppingList(itemName, quantity);
-            } else {
-                removeFromShoppingList(itemName, quantity);
-            }
-        }
-
-        function addToShoppingList(name, quantity) {
-            const listItem = document.createElement('div');
-            listItem.className = 'item-row';
-            listItem.innerHTML = `
-                <span>${name} (${quantity})</span>
-                <div class="checkbox checked" onclick="removeFromShoppingList(this)"></div>
-            `;
-            document.getElementById('shopping-list-content').appendChild(listItem);
-        }
-
-        function removeFromShoppingList(item) {
-            item.closest('.item-row').remove();
-        }
-    </script>
 </body>
 </html>
