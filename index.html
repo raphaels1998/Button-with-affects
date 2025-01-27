@@ -52,9 +52,8 @@
 
         document.querySelectorAll('.container').forEach(container => {
             container.addEventListener('dragstart', (event) => {
-                draggedElement = event.target;
+                draggedElement = container;
                 event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/html', draggedElement.innerHTML);
             });
 
             container.addEventListener('dragover', (event) => {
@@ -64,9 +63,11 @@
 
             container.addEventListener('drop', (event) => {
                 event.preventDefault();
-                if (draggedElement !== event.target) {
-                    draggedElement.innerHTML = event.target.innerHTML;
-                    event.target.innerHTML = event.dataTransfer.getData('text/html');
+                if (draggedElement !== container) {
+                    const parent = draggedElement.parentNode;
+                    const nextSibling = container.nextSibling === draggedElement ? container : container.nextSibling;
+                    parent.insertBefore(draggedElement, container);
+                    parent.insertBefore(container, nextSibling);
                 }
             });
 
