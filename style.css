@@ -45,19 +45,20 @@ body {
     border-radius: 18px;
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    height: 200px; /* Ensure consistent height */
+    max-width: 100%;
+    height: 250px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
     transition: transform 0.2s;
 }
 
 .add-folder-card {
     background: rgba(0, 0, 0, 0.05);
     cursor: pointer;
-    justify-content: center; /* Center the plus sign */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .add-folder-card:hover {
