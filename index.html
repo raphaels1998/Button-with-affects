@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Folders on Web</title>
+  <title>iPhone-Like Folders</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="desktop">
     <!-- Folder -->
-    <div class="folder" onclick="openFolder('folder1')">
+    <div class="folder" onclick="toggleFolder('folder1')">
       <div class="folder-icon">📁</div>
       <p class="folder-name">Folder 1</p>
     </div>
@@ -20,11 +20,12 @@
         <span>Folder 1</span>
         <button onclick="closeFolder('folder1')">X</button>
       </div>
-      <ul>
-        <li>App 1</li>
-        <li>App 2</li>
-        <li>App 3</li>
-      </ul>
+      <div class="folder-grid">
+        <div class="app-icon">📱</div>
+        <div class="app-icon">📧</div>
+        <div class="app-icon">🌐</div>
+        <div class="app-icon">📅</div>
+      </div>
     </div>
   </div>
 
