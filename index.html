@@ -14,25 +14,26 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-            flex-wrap: wrap; /* Allow containers to wrap */
+            flex-wrap: wrap;  /* Allow containers to wrap */
         }
 
         .container {
             display: grid;
-            grid-template-columns: 1fr; /* One column */
-            gap: 16px; /* Spacing between inputs */
+            grid-template-columns: 1fr;  /* One column */
+            gap: 16px;  /* Spacing between inputs */
             padding: 20px;
-            width: 150px; /* Width of the container */
+            width: 150px;  /* Width of the container */
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
+            cursor: grab;
+            touch-action: none;  /* Prevent touch events from interfering with drag-and-drop */
             position: relative;
         }
 
         .dragging {
-            opacity: 0.5; /* Visual feedback for dragging */
+            opacity: 0.5;  /* Visual feedback for dragging */
             position: absolute;
             z-index: 1000;
         }
@@ -40,6 +41,9 @@
         .placeholder {
             background: #ddd;
             border: 2px dashed #bbb;
+            width: 150px;
+            height: 100px;
+            margin: 10px;
         }
 
         input {
@@ -47,16 +51,15 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
-            width: 100%; /* Make inputs fill container width */
+            width: 100%;  /* Make inputs fill container width */
         }
-
     </style>
 </head>
 <body>
-    <div class="container" draggable="true">
+    <div class="container">
         <input type="text" placeholder="Enter text here" />
     </div>
-    <div class="container" draggable="true">
+    <div class="container">
         <input type="text" placeholder="Enter text here" />
     </div>
 
@@ -67,11 +70,17 @@
 
         document.querySelectorAll('.container').forEach(container => {
             container.addEventListener('touchstart', (event) => {
+                // Prevent dragging when touching the input field
+                if (event.target.tagName.toLowerCase() === 'input') {
+                    return;
+                }
+
                 draggedElement = container;
                 placeholder = document.createElement('div');
-                placeholder.className = 'container placeholder';
+                placeholder.className = 'placeholder';
                 container.parentNode.insertBefore(placeholder, container.nextSibling);
                 container.classList.add('dragging');
+                
                 const touch = event.touches[0];
                 startX = touch.clientX - container.offsetLeft;
                 startY = touch.clientY - container.offsetTop;
