@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Container Grid</title>
+    <title>Draggable Containers</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,11 +25,15 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            margin: 10px;
         }
 
         .container.enlarged {
             transform: scale(2); /* Double the size */
+        }
+
+        .container.draggable {
+            cursor: move;
         }
 
         input {
@@ -43,33 +47,48 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container draggable" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
-    <div class="container">
+    <div class="container draggable" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
 
     <script>
         const containers = document.querySelectorAll('.container');
-        let enlargedContainer = null;
+        let draggedContainer = null;
 
         containers.forEach(container => {
-            container.addEventListener('click', (event) => {
+            container.addEventListener('dragstart', (event) => {
+                draggedContainer = container;
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/html', container.innerHTML);
+                container.classList.add('enlarged');
+            });
+
+            container.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+            });
+
+            container.addEventListener('drop', (event) => {
                 event.stopPropagation();
-                if (enlargedContainer && enlargedContainer !== container) {
-                    enlargedContainer.classList.remove('enlarged');
+                if (draggedContainer !== container) {
+                    draggedContainer.innerHTML = container.innerHTML;
+                    container.innerHTML = event.dataTransfer.getData('text/html');
                 }
-                container.classList.toggle('enlarged');
-                enlargedContainer = container.classList.contains('enlarged') ? container : null;
+                container.classList.remove('enlarged');
+                return false;
+            });
+
+            container.addEventListener('dragend', () => {
+                containers.forEach(c => c.classList.remove('enlarged'));
+                draggedContainer = null;
             });
         });
 
         document.addEventListener('click', () => {
-            if (enlargedContainer) {
-                enlargedContainer.classList.remove('enlarged');
-                enlargedContainer = null;
-            }
+            containers.forEach(c => c.classList.remove('enlarged'));
         });
     </script>
 </body>
