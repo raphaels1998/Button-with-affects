@@ -27,13 +27,13 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            cursor: grab;
             touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
             position: relative;
         }
 
         .dragging {
             opacity: 0.5; /* Visual feedback for dragging */
+            z-index: 1000; /* Ensure the dragged element is on top */
         }
 
         input {
@@ -66,7 +66,8 @@
                 startX = touch.clientX - container.offsetLeft;
                 startY = touch.clientY - container.offsetTop;
                 container.style.position = 'absolute';
-                container.style.zIndex = 1000;
+                container.style.left = `${touch.clientX - startX}px`;
+                container.style.top = `${touch.clientY - startY}px`;
             });
 
             container.addEventListener('touchmove', (event) => {
@@ -93,7 +94,6 @@
                     }
                 }
                 draggedElement.style.position = '';
-                draggedElement.style.zIndex = '';
                 draggedElement.style.left = '';
                 draggedElement.style.top = '';
                 draggedElement.classList.remove('dragging');
