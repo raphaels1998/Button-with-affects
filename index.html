@@ -3,37 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iPhone Folder</title>
+  <title>Master List & Shopping List</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="home-screen">
-    <!-- Folder Icon -->
-    <div class="folder" onclick="openFolder()">
-      <div class="folder-preview">
-        <div class="mini-app-icon">📱</div>
-        <div class="mini-app-icon">📧</div>
-        <div class="mini-app-icon">🌐</div>
-        <div class="mini-app-icon">📅</div>
+  <div class="container">
+    <!-- Master List Tab -->
+    <div class="tab" id="master-list-tab">
+      <h2>Master List</h2>
+      <div class="folder" data-folder-id="1">
+        <div class="folder-header">
+          <span class="folder-name" contenteditable="true">Groceries</span>
+          <button class="expand-btn">▼</button>
+        </div>
+        <div class="folder-content">
+          <div class="item">
+            <input type="text" class="item-name" placeholder="Product Name">
+            <input type="number" class="item-quantity" placeholder="Qty" min="1">
+            <input type="checkbox" class="add-to-list">
+          </div>
+          <button class="add-item-btn">+ Add Item</button>
+        </div>
       </div>
+      <button class="add-folder-btn">+ Add Folder</button>
     </div>
 
-    <!-- Expanded Folder Content -->
-    <div id="expandedFolder" class="expanded-folder">
-      <div class="folder-header">
-        <span>Folder</span>
-        <button onclick="closeFolder()">X</button>
-      </div>
-      <div class="folder-grid">
-        <div class="app-icon">📱</div>
-        <div class="app-icon">📧</div>
-        <div class="app-icon">🌐</div>
-        <div class="app-icon">📅</div>
-      </div>
+    <!-- Shopping List Tab -->
+    <div class="tab" id="shopping-list-tab">
+      <h2>Shopping List</h2>
+      <div class="shopping-list"></div>
     </div>
-
-    <!-- Dimmed Background -->
-    <div id="backgroundDim" class="background-dim" onclick="closeFolder()"></div>
   </div>
 
   <script src="script.js"></script>
