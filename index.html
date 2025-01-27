@@ -3,38 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Master List & Shopping List</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Animated Lists</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f7;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .tab {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      width: 320px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .folder {
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .folder-header {
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .folder-header:hover {
+      background: #f5f5f7;
+    }
+
+    .folder-name {
+      flex: 1;
+      font-weight: 500;
+      margin: 0 12px;
+      border: none;
+      outline: none;
+    }
+
+    .chevron {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .folder-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .item {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      align-items: center;
+      border-top: 1px solid #eee;
+    }
+
+    input[type="text"], input[type="number"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #007AFF;
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 12px;
+      background: #007AFF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .add-btn:hover {
+      opacity: 0.85;
+    }
+
+    .shopping-list {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Master List Tab -->
-    <div class="tab" id="master-list-tab">
-      <h2>Master List</h2>
-      <div class="folder" data-folder-id="1">
+  <div class="tab">
+    <h2>Master List</h2>
+    <div class="folder">
+      <div class="folder-header">
+        <span class="folder-name" contenteditable>Groceries</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+      <div class="folder-content">
+        <div class="item">
+          <input type="text" placeholder="Item">
+          <input type="number" placeholder="Qty" min="1">
+          <input type="checkbox">
+        </div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addFolder()">Add Folder</button>
+  </div>
+
+  <div class="tab">
+    <h2>Shopping List</h2>
+    <div class="shopping-list"></div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.folder-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const chevron = this.querySelector('.chevron');
+        const isOpen = content.style.maxHeight;
+        
+        if (isOpen) {
+          content.style.maxHeight = null;
+          chevron.style.transform = 'rotate(0deg)';
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          chevron.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+
+    function addFolder() {
+      const newFolder = document.createElement('div');
+      newFolder.className = 'folder';
+      newFolder.innerHTML = `
         <div class="folder-header">
-          <span class="folder-name" contenteditable="true">Groceries</span>
-          <button class="expand-btn">▼</button>
+          <span class="folder-name" contenteditable>New Folder</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
         </div>
         <div class="folder-content">
           <div class="item">
-            <input type="text" class="item-name" placeholder="Product Name">
-            <input type="number" class="item-quantity" placeholder="Qty" min="1">
-            <input type="checkbox" class="add-to-list">
+            <input type="text" placeholder="Item">
+            <input type="number" placeholder="Qty" min="1">
+            <input type="checkbox">
           </div>
-          <button class="add-item-btn">+ Add Item</button>
         </div>
-      </div>
-      <button class="add-folder-btn">+ Add Folder</button>
-    </div>
+      `;
+      
+      document.querySelector('.tab').insertBefore(newFolder, document.querySelector('.add-btn'));
+      attachFolderEvents(newFolder);
+    }
 
-    <!-- Shopping List Tab -->
-    <div class="tab" id="shopping-list-tab">
-      <h2>Shopping List</h2>
-      <div class="shopping-list"></div>
-    </div>
-  </div>
+    function attachFolderEvents(folder) {
+      folder.querySelector('.folder-header').addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const chevron = this.querySelector('.chevron');
+        const isOpen = content.style.maxHeight;
+        
+        if (isOpen) {
+          content.style.maxHeight = null;
+          chevron.style.transform = 'rotate(0deg)';
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          chevron.style.transform = 'rotate(180deg)';
+        }
+      });
+    }
 
-  <script src="script.js"></script>
+    document.addEventListener('change', (e) => {
+      if (e.target.type === 'checkbox') {
+        const item = e.target.closest('.item');
+        const name = item.querySelector('input[type="text"]').value;
+        const qty = item.querySelector('input[type="number"]').value;
+        
+        if (e.target.checked) {
+          const li = document.createElement('div');
+          li.className = 'item';
+          li.textContent = `${name} (${qty})`;
+          document.querySelector('.shopping-list').appendChild(li);
+        } else {
+          Array.from(document.querySelector('.shopping-list').children).forEach(li => {
+            if (li.textContent === `${name} (${qty})`) li.remove();
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
