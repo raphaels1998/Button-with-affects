@@ -1,3 +1,4 @@
+// scripts.js
 function openTab(tabName) {
     var i, tabcontent, tabbuttons;
     tabcontent = document.getElementsByClassName("tab-content");
@@ -44,7 +45,6 @@ function drop(event) {
         parent.insertBefore(draggedElement, dropTarget.nextSibling);
     }
 }
-
 
 document.querySelectorAll('.container').forEach(container => {
     container.addEventListener('dragover', allowDrop);
