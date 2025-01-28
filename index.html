@@ -112,8 +112,10 @@
     });
 });
 
-document.body.addEventListener('click', () => {
-    document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
+document.body.addEventListener('click', (e) => {
+    if (!e.target.closest('.app-icon')) {
+        document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
+    }
 });
 
   
