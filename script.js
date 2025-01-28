@@ -45,6 +45,7 @@ function drop(event) {
     }
 }
 
+
 document.querySelectorAll('.container').forEach(container => {
     container.addEventListener('dragover', allowDrop);
     container.addEventListener('drop', drop);
