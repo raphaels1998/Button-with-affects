@@ -1,21 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, maximum-scale=1 initial-scale=1.0 user-scalable=no">
-    <title>Apple App Icons</title>
+    <!-- ... keep existing head content ... -->
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            /*align-items: center;
-            height: 100vh;*/
-            background-color: grey;
-            margin: 0;
-            flex-direction: row;
-        }
-
-
+        /* ⬇️ Modified CSS for icon structure */
         .app-icon {
             width: 200px;
             height: 200px;
@@ -29,101 +17,69 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            transition: transform 0.1s ease-in-out;
+            transition: all 1s ease-in-out; /* ⬇️ Changed to 'all' */
             overflow-y: auto;
-        
+            position: relative; /* ⬇️ Added */
         }
-        
-        .app-icon input[type="text"] {
-            margin-left: 12px;
-            margin-bottom: 10px;
-            width: 75%;
-        
-        }
-        
-        input{
-            margin-top: 10px;
-            font-size: 16px;
-            
-        }
-        
-         .app-icon.expanded {
-              transform: translate(-50%, -50%) scale(1.25);
-               position: fixed;
-              top: 50%;
-              left: 50%;
+
+        /* ⬇️ New inner content container */
+        .app-icon-content {
+            width: 100%;
+            height: 100%;
             transition: transform 1s ease-in-out;
         }
+
+        .app-icon.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px; /* 200px * 1.25 */
+            height: 250px; /* 200px * 1.25 */
+            z-index: 1000;
+        }
+
+        .app-icon.expanded .app-icon-content {
+            transform: scale(1.25);
+        }
+
+        /* ⬇️ Remove old expanded transform */
+        /* .app-icon.expanded {
+              transform: translate(-50%, -50%) scale(1.25);
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transition: transform 1s ease-in-out;
+        } */
         
-        @keyframes pop {
-             0% { transform: scale(1); }
-             50% { transform: scale(1.1); background-color: teal;}
-             100% { transform: scale(1); }
-        }
-        
-        .app-icon input.pop {
-             animation: pop 0.3s ease-in-out;
-        }
-
-        #app1 {
-         background: linear-gradient(135deg, #90ee90, #32cd32);
-        }
-
-        #app2 {
-            background: linear-gradient(135deg, #90ee90, #32cd32);
-        }
-
-        .app-icon:active {
-            transform: scale(0.95);
-        }
+        /* ... keep rest of CSS the same ... */
     </style>
 </head>
 <body>
+    <!-- ⬇️ Wrap content in app-icon-content div -->
     <div class="app-icon" id="app1">
-        <input type="text" maxlength="12" placeholder="Enter item name">
+        <div class="app-icon-content">
             <input type="text" maxlength="12" placeholder="Enter item name">
-                   <input type="text" maxlength="12" placeholder="Enter item name">
-            <!--<input type="text" maxlength="12" placeholder="Enter item name">-->
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+        </div>
     </div>
     
-    <div class="app-icon" id="app2">App 2</div>
-    
-    
-   
-  <script>
-  function checkInputs() {
-    var inputs = document.querySelectorAll('.app-icon input');
-    if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ].value.trim() != '') {
-      var newInput = document.createElement('input');
-      newInput.type = 'text';
-      newInput.placeholder = 'Enter item';
-      newInput.classList.add('pop');
-      document.querySelector('.app-icon').appendChild(newInput);
-      document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+    <div class="app-icon" id="app2">
+        <div class="app-icon-content">App 2</div>
+    </div>
+
+    <script>
+    // ⬇️ Update input selector to include .app-icon-content
+    function checkInputs() {
+        var inputs = document.querySelectorAll('.app-icon-content input');
+        // ... rest of function remains the same ...
     }
-  }
-  document.querySelector('.app-icon').addEventListener('input', checkInputs);
- 
+    
+    // ⬇️ Update scroll target to include .app-icon-content
+    document.querySelector('.app-icon-content').scrollTop = document.querySelector('.app-icon-content').scrollHeight;
 
-   document.querySelectorAll('.app-icon').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent the click from reaching the body handler
-        icon.classList.toggle('expanded');
-    });
-});
-
-document.body.addEventListener('click', (e) => {
-    // Close expanded app-icons only if the click is outside all of them
-    if (!e.target.closest('.app-icon.expanded')) {
-        document.querySelectorAll('.app-icon.expanded').forEach(icon => {
-            icon.classList.remove('expanded');
-        });
-    }
-});
-
-  
-</script>
-
-
+    // ... rest of JavaScript remains the same ...
+    </script>
 </body>
 </html>
