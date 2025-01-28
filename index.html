@@ -8,13 +8,10 @@
         body {
             display: flex;
             justify-content: center;
-            /*align-items: center;
-            height: 100vh;*/
             background-color: grey;
             margin: 0;
             flex-direction: row;
         }
-
 
         .app-icon {
             width: 200px;
@@ -31,42 +28,40 @@
             cursor: pointer;
             transition: transform 0.1s ease-in-out;
             overflow-y: auto;
-        
         }
         
         .app-icon input[type="text"] {
             margin-left: 12px;
             margin-bottom: 10px;
             width: 75%;
-        
         }
         
-        input{
+        input {
             margin-top: 10px;
             font-size: 16px;
-            
         }
         
-         .app-icon.expanded {
-              transform: translate(-50%, -50%) scale(1.25);
-               position: fixed;
-              top: 50%;
-              left: 50%;
+        .app-icon.expanded {
+            transform: translate(-50%, -50%) scale(1.25);
+            position: fixed;
+            top: 50%;
+            left: 50%;
             transition: transform 1s ease-in-out;
+            z-index: 1000;
         }
         
         @keyframes pop {
-             0% { transform: scale(1); }
-             50% { transform: scale(1.1); background-color: teal;}
-             100% { transform: scale(1); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: teal;}
+            100% { transform: scale(1); }
         }
         
         .app-icon input.pop {
-             animation: pop 0.3s ease-in-out;
+            animation: pop 0.3s ease-in-out;
         }
 
         #app1 {
-         background: linear-gradient(135deg, #90ee90, #32cd32);
+            background: linear-gradient(135deg, #90ee90, #32cd32);
         }
 
         #app2 {
@@ -81,49 +76,47 @@
 <body>
     <div class="app-icon" id="app1">
         <input type="text" maxlength="12" placeholder="Enter item name">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-                   <input type="text" maxlength="12" placeholder="Enter item name">
-            <!--<input type="text" maxlength="12" placeholder="Enter item name">-->
+        <input type="text" maxlength="12" placeholder="Enter item name">
+        <input type="text" maxlength="12" placeholder="Enter item name">
     </div>
     
     <div class="app-icon" id="app2">App 2</div>
     
-    
-   
-  <script>
-  function checkInputs() {
-    var inputs = document.querySelectorAll('.app-icon input');
-    if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ].value.trim() != '') {
-      var newInput = document.createElement('input');
-      newInput.type = 'text';
-      newInput.placeholder = 'Enter item';
-      newInput.classList.add('pop');
-      document.querySelector('.app-icon').appendChild(newInput);
-      document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
-    }
-  }
-  document.querySelector('.app-icon').addEventListener('input', checkInputs);
- 
+    <script>
+        function checkInputs() {
+            var inputs = document.querySelectorAll('.app-icon input');
+            if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length - 1].value.trim() != '') {
+                var newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.placeholder = 'Enter item';
+                newInput.classList.add('pop');
+                document.querySelector('.app-icon').appendChild(newInput);
+                document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+            }
+        }
+        
+        document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
-   document.querySelectorAll('.app-icon').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent the click from reaching the body handler
-        icon.classList.toggle('expanded');
-    });
-});
-
-document.body.addEventListener('click', (e) => {
-    // Close expanded app-icons only if the click is outside all of them
-    if (!e.target.closest('.app-icon.expanded')) {
-        document.querySelectorAll('.app-icon.expanded').forEach(icon => {
-            icon.classList.remove('expanded');
+        // Modified click handlers
+        document.querySelectorAll('.app-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                if (!icon.classList.contains('expanded')) {
+                    // Only expand if it's not already expanded
+                    document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
+                        expandedIcon.classList.remove('expanded');
+                    });
+                    icon.classList.add('expanded');
+                }
+            });
         });
-    }
-});
 
-  
-</script>
-
-
+        // Handle clicks on the document
+        document.addEventListener('click', (e) => {
+            const expandedIcon = document.querySelector('.app-icon.expanded');
+            if (expandedIcon && !expandedIcon.contains(e.target)) {
+                expandedIcon.classList.remove('expanded');
+            }
+        });
+    </script>
 </body>
 </html>
