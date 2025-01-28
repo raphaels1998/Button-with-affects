@@ -105,17 +105,16 @@
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
  
 
-       document.querySelectorAll('.app-icon').forEach(icon => {
-        icon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            icon.classList.toggle('expanded');
-        });
-    document.querySelectorAll('.app-icon').forEach(icon => {
-        icon.addEventListener('click', (e) => e.stopPropagation());
+      document.querySelectorAll('.app-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        icon.classList.toggle('expanded');
     });
-    document.body.addEventListener('click', () => {
-        document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
-    });
+});
+
+document.body.addEventListener('click', () => {
+    document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
+});
 
   
 </script>
