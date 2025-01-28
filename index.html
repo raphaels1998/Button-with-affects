@@ -73,6 +73,7 @@
       newInput.type = 'text';
       newInput.placeholder = 'Enter item';
       document.querySelector('.app-icon').appendChild(newInput);
+      document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
     }
   }
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
