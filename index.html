@@ -61,13 +61,16 @@
     <div class="app-icon" id="app2">App 2</div>
     
     <script>
-        document.getElementById('app1').addEventListener('click', function() {
-            
-        });
-
-        document.getElementById('app2').addEventListener('click', function() {
-        
-        });
-    </script>
+        function checkInputs() {
+          var inputs = document.querySelectorAll('.app-icon input');
+          if (Array.from(inputs).filter(input => input.value.trim() !== '').length >= inputs.length && inputs.length < 4) {
+             var newInput = document.createElement('input');
+             newInput.type = 'text';
+             newInput.placeholder = 'Enter item'
+             document.querySelector('.app-icon').appendChild(newInput);
+          }
+        }
+         document.querySelector('.app-icon').addEventListener('input', checkInputs);
+      </script>
 </body>
 </html>
