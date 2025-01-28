@@ -63,16 +63,14 @@
     <div class="app-icon" id="app2">App 2</div>
     
     <script>
-        function checkInputs() {
-          var inputs = document.querySelectorAll('.app-icon input');
-          if (Array.from(inputs).filter(input => input.value.trim() !== '').length >= inputs.length && inputs.length < 4) {
-             var newInput = document.createElement('input');
-             newInput.type = 'text';
-             newInput.placeholder = 'Enter item'
-             document.querySelector('.app-icon').appendChild(newInput);
-          }
-        }
-         document.querySelector('.app-icon').addEventListener('input', checkInputs);
-      </script>
+  document.querySelector('.app-icon').addEventListener('input', function() {
+    if (document.querySelectorAll('.app-icon input').length < 6 && document.querySelectorAll('.app-icon input:last-child').value) {
+      var newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.placeholder = 'Enter item';
+      document.querySelector('.app-icon').appendChild(newInput);
+    }
+  });
+</script>
 </body>
 </html>
