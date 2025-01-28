@@ -1,15 +1,7 @@
-// scripts.js
-document.querySelectorAll('.folder').forEach(folder => {
-    folder.addEventListener('click', function(event) {
-        event.stopPropagation();
-        this.classList.toggle('expanded');
-    });
+document.getElementById('app1').addEventListener('click', function() {
+    alert('App 1 clicked!');
 });
 
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.folder')) {
-        document.querySelectorAll('.folder.expanded').forEach(folder => {
-            folder.classList.remove('expanded');
-        });
-    }
+document.getElementById('app2').addEventListener('click', function() {
+    alert('App 2 clicked!');
 });
