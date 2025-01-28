@@ -41,6 +41,13 @@
         
         }
         
+         .app-icon.expanded {
+              transform: translate(-50%, -50%) scale(2);
+               position: fixed;
+              top: 50%;
+              left: 50%;
+        }
+        
         @keyframes pop {
              0% { transform: scale(1); }
              50% { transform: scale(1.1); }
@@ -49,6 +56,7 @@
         
         .app-icon input.pop {
              animation: pop 0.3s ease-in-out;
+            background-color: yellow;
         }
 
         #app1 {
@@ -89,6 +97,11 @@
     }
   }
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
+
+  document.querySelectorAll('.app-icon').forEach(icon => {
+        icon.addEventListener('click', () => icon.classList.toggle('expanded'));
+    });
+    
 </script>
 
 
