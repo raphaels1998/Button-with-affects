@@ -113,8 +113,8 @@
 });
 
 document.body.addEventListener('click', (e) => {
-    // Check if the click target is outside any expanded app-icon
-    if (!e.target.closest('.app-icon.expanded')) {
+    // Check if the click target is outside any expanded app-icon and not an input or any other specified element inside the app-icon
+    if (!e.target.closest('.app-icon.expanded') && !e.target.matches('input')) {
         document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
     }
 });
