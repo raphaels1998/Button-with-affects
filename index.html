@@ -50,13 +50,12 @@
         
         @keyframes pop {
              0% { transform: scale(1); }
-             50% { transform: scale(1.1); }
+             50% { transform: scale(1.1); background-color: green;}
              100% { transform: scale(1); }
         }
         
         .app-icon input.pop {
              animation: pop 0.3s ease-in-out;
-            background-color: yellow;
         }
 
         #app1 {
@@ -99,7 +98,15 @@
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
   document.querySelectorAll('.app-icon').forEach(icon => {
-        icon.addEventListener('click', () => icon.classList.toggle('expanded'));
+        icon.addEventListener('click', (e) => {
+            if (!e.target.matches('input')) {
+                e.stopPropagation();
+                icon.classList.toggle('expanded');
+            }
+        });
+    });
+    document.body.addEventListener('click', () => {
+        document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
     });
     
 </script>
