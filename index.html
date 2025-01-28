@@ -1,18 +1,35 @@
-<div class="shopping-container">
-  <div class="shopping-item">
-    <input type="text" placeholder="Item Name">
-    <input type="number" placeholder="Qty">
-    <input type="checkbox"> Add
-  </div>
-  <div class="shopping-item">
-    <input type="text" placeholder="Item Name">
-    <input type="number" placeholder="Qty">
-    <input type="checkbox"> Add
-  </div>
-  <div class="shopping-item">
-    <input type="text" placeholder="Item Name">
-    <input type="number" placeholder="Qty">
-    <input type="checkbox"> Add
-  </div>
-  <!-- Add more items as needed -->
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterlist and Shopping List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab('masterlist')">Masterlist</button>
+        <button class="tab-button" onclick="openTab('shoppinglist')">Shopping List</button>
+    </div>
+    <div id="masterlist" class="tab-content">
+        <div class="container" draggable="true" ondragstart="drag(event)">
+            <div class="label" contenteditable="true">Label 1</div>
+            <div class="content">
+                <input type="text" placeholder="Item">
+                <input type="number" placeholder="Qty">
+            </div>
+        </div>
+        <div class="container" draggable="true" ondragstart="drag(event)">
+            <div class="label" contenteditable="true">Label 2</div>
+            <div class="content">
+                <input type="text" placeholder="Item">
+                <input type="number" placeholder="Qty">
+            </div>
+        </div>
+    </div>
+    <div id="shoppinglist" class="tab-content" style="display:none;">
+        <!-- Shopping list content will go here -->
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
