@@ -76,15 +76,17 @@
     
     
   <script>
-  function checkInputs() {
-    var inputs = document.querySelectorAll('.app-icon input');
-    if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ].value.trim() === event.target) {
-      var newInput = document.createElement('input');
-      newInput.type = 'text';
-      newInput.placeholder = 'Enter item';
-      newInput.classList.add('pop');
-      document.querySelector('.app-icon').appendChild(newInput);
-      document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+  function checkInputs(event) {
+    if(event.target.value.trim() != '') {
+       var inputs = document.querySelectorAll('.app-icon input');
+       if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ] === event.target) {
+            var newInput = document.createElement('input');
+             newInput.type = 'text';
+             newInput.placeholder = 'Enter item';
+             newInput.classList.add('pop');
+             document.querySelector('.app-icon').appendChild(newInput);
+             document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+        }
     }
   }
   document.querySelector('.app-icon').addEventListener('blur', checkInputs);
