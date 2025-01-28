@@ -12,14 +12,14 @@
         <button class="tab-button" onclick="openTab('shoppinglist')">Shopping List</button>
     </div>
     <div id="masterlist" class="tab-content">
-        <div class="container" draggable="true" ondragstart="drag(event)">
+        <div class="container" draggable="true" ondragstart="drag(event)" id="container1">
             <div class="label" contenteditable="true">Label 1</div>
             <div class="content">
                 <input type="text" placeholder="Item">
                 <input type="number" placeholder="Qty">
             </div>
         </div>
-        <div class="container" draggable="true" ondragstart="drag(event)">
+        <div class="container" draggable="true" ondragstart="drag(event)" id="container2">
             <div class="label" contenteditable="true">Label 2</div>
             <div class="content">
                 <input type="text" placeholder="Item">
