@@ -40,6 +40,16 @@
             width: 75%;
         
         }
+        
+        @keyframes pop {
+             0% { transform: scale(1); }
+             50% { transform: scale(1.1); }
+             100% { transform: scale(1); }
+        }
+        
+        .app-icon input.pop {
+             animation: pop 0.3s ease-in-out;
+        }
 
         #app1 {
             background: linear-gradient(135deg, #ff5858, #f09819);
@@ -72,6 +82,7 @@
       var newInput = document.createElement('input');
       newInput.type = 'text';
       newInput.placeholder = 'Enter item';
+      newInput.classList.add('pop');
       document.querySelector('.app-icon').appendChild(newInput);
       document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
     }
