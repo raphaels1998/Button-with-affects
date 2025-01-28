@@ -89,7 +89,12 @@
         }
     }
   }
-  document.querySelector('.app-icon').addEventListener('blur', checkInputs);
+   
+
+  // Add the checkInputs function to the blur event for each input
+  document.querySelectorAll('.app-icon input').forEach(input => {
+    input.addEventListener('blur', checkInputs);
+    });
 </script>
 
 
