@@ -105,17 +105,19 @@
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
  
 
-    document.querySelectorAll('.app-icon').forEach(icon => {
+   document.querySelectorAll('.app-icon').forEach(icon => {
     icon.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // Prevent the click from reaching the body handler
         icon.classList.toggle('expanded');
     });
 });
 
 document.body.addEventListener('click', (e) => {
-    // Check if the click target is outside any expanded app-icon and not an input or any other specified element inside the app-icon
-    if (!e.target.closest('.app-icon.expanded') && !e.target.matches('input')) {
-        document.querySelectorAll('.app-icon.expanded').forEach(icon => icon.classList.remove('expanded'));
+    // Close expanded app-icons only if the click is outside all of them
+    if (!e.target.closest('.app-icon.expanded')) {
+        document.querySelectorAll('.app-icon.expanded').forEach(icon => {
+            icon.classList.remove('expanded');
+        });
     }
 });
 
