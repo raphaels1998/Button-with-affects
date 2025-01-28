@@ -10,10 +10,12 @@ function openTab(tabName) {
         tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
     }
     document.getElementById(tabName).style.display = "block";
+    document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add("active");
 }
 
 document.querySelectorAll('.container .label').forEach(label => {
-    label.addEventListener('click', function() {
+    label.addEventListener('click', function(event) {
+        event.stopPropagation();
         var container = this.parentElement;
         container.classList.toggle('expanded');
     });
