@@ -3,32 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masterlist and Shopping List</title>
+    <title>Apple-Like Folders</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="tabs">
-        <button class="tab-button active" onclick="openTab('masterlist')">Masterlist</button>
-        <button class="tab-button" onclick="openTab('shoppinglist')">Shopping List</button>
-    </div>
-    <div id="masterlist" class="tab-content">
-        <div class="container" draggable="true" ondragstart="drag(event)" id="container1">
-            <div class="label" contenteditable="true">Label 1</div>
+    <div class="folder-container">
+        <div class="folder" id="folder1">
+            <div class="label" contenteditable="true">Folder 1</div>
             <div class="content">
                 <input type="text" placeholder="Item">
                 <input type="number" placeholder="Qty">
             </div>
         </div>
-        <div class="container" draggable="true" ondragstart="drag(event)" id="container2">
-            <div class="label" contenteditable="true">Label 2</div>
+        <div class="folder" id="folder2">
+            <div class="label" contenteditable="true">Folder 2</div>
             <div class="content">
                 <input type="text" placeholder="Item">
                 <input type="number" placeholder="Qty">
             </div>
         </div>
-    </div>
-    <div id="shoppinglist" class="tab-content" style="display:none;">
-        <!-- Shopping list content will go here -->
     </div>
     <script src="scripts.js"></script>
 </body>
