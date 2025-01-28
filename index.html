@@ -79,7 +79,7 @@
   function checkInputs(event) {
     if(event.target.value.trim() != '') {
        var inputs = document.querySelectorAll('.app-icon input');
-       if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ] === event.target) {
+       if (inputs.every(input => input !== event.target) {
             var newInput = document.createElement('input');
              newInput.type = 'text';
              newInput.placeholder = 'Enter item';
