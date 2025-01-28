@@ -74,20 +74,23 @@
     
     <div class="app-icon" id="app2">App 2</div>
     
-    <script>
-  function checkInputs(event) {
-  if (Array.from(document.querySelectorAll('.app-icon input')).every(input => input !== event.target && input.value.trim() === '')) {
-    var newInput = document.createElement('input');
-    newInput.type = 'text';
-    newInput.placeholder = 'Enter item';
-    newInput.classList.add('pop');
-    document.querySelector('.app-icon').appendChild(newInput);
-    document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+    
+   
+  <script>
+  function checkInputs() {
+    var inputs = document.querySelectorAll('.app-icon input');
+    if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length- 1 ].value.trim() != '') {
+      var newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.placeholder = 'Enter item';
+      newInput.classList.add('pop');
+      document.querySelector('.app-icon').appendChild(newInput);
+      document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
+    }
   }
-}
-
-document.querySelector('.app-icon').addEventListener('input', checkInputs);
-});
+  document.querySelector('.app-icon').addEventListener('input', checkInputs);
 </script>
+
+
 </body>
 </html>
