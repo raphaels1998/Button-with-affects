@@ -103,13 +103,11 @@
     }
   }
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
-
+ 
   document.querySelectorAll('.app-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
-            if (!e.target.matches('input')) {
-                e.stopPropagation();
-                icon.classList.toggle('expanded');
-            }
+            e.stopPropagation();
+            icon.classList.toggle('expanded');
         });
     });
     document.body.addEventListener('click', () => {
