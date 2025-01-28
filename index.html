@@ -16,8 +16,8 @@
         }
 
         .app-icon {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin: 10px;
@@ -45,8 +45,13 @@
     </style>
 </head>
 <body>
-    <div class="app-icon" id="app1">App 1</div>
+    <div class="app-icon" id="app1">
+        <input type="radio" name="option" value="1"> Option 1
+        <input type="radio" name="option" value="2"> Option 2
+    </div>
+    
     <div class="app-icon" id="app2">App 2</div>
+    
     <script>
         document.getElementById('app1').addEventListener('click', function() {
             alert('App 1 clicked!');
