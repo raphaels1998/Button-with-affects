@@ -14,7 +14,6 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-            flex-wrap: wrap; /* Allow containers to wrap */
         }
 
         .container {
@@ -27,24 +26,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            cursor: grab;
-            touch-action: none; /* Prevent touch events from interfering with drag-and-drop */
-            position: relative;
-            user-select: none; /* Prevent text selection */
-        }
-
-        .dragging {
-            opacity: 0.5; /* Visual feedback for dragging */
-            position: absolute;
-            z-index: 1000;
-        }
-
-        .placeholder {
-            background: #ddd;
-            border: 2px dashed #bbb;
-            width: 150px;
-            height: 100px;
-            margin: 10px;
+            cursor: move;
         }
 
         input {
@@ -52,82 +34,50 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
-            width: 100%; /* Make inputs fill container width */
+            width: 80%; /* Make inputs fill container width */
         }
 
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
-    <div class="container">
+    <div class="container" draggable="true">
         <input type="text" placeholder="Enter text here" />
     </div>
 
     <script>
-        let draggedElement = null;
-        let placeholder = null;
-        let startX, startY, currentX, currentY;
+        const containers = document.querySelectorAll('.container');
+        let draggedContainer = null;
 
-        document.querySelectorAll('.container').forEach(container => {
-            container.addEventListener('touchstart', (event) => {
-                // Prevent dragging when touching the input field
-                if (event.target.tagName.toLowerCase() === 'input') {
-                    return;
-                }
-
-                event.preventDefault(); // Prevent the default touch behavior
-
-                draggedElement = container;
-                placeholder = document.createElement('div');
-                placeholder.className = 'placeholder';
-                container.parentNode.insertBefore(placeholder, container.nextSibling);
-                container.classList.add('dragging');
-                
-                const touch = event.touches[0];
-                startX = touch.clientX - container.offsetLeft;
-                startY = touch.clientY - container.offsetTop;
-                container.style.left = `${touch.clientX - startX}px`;
-                container.style.top = `${touch.clientY - startY}px`;
+        containers.forEach(container => {
+            container.addEventListener('dragstart', (event) => {
+                draggedContainer = container;
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/plain', container.innerHTML);
+                setTimeout(() => container.classList.add('hidden'), 0);
             });
 
-            container.addEventListener('touchmove', (event) => {
-                if (!draggedElement) return;
-                event.preventDefault(); // Prevent the default touch behavior
-
-                const touch = event.touches[0];
-                currentX = touch.clientX - startX;
-                currentY = touch.clientY - startY;
-                draggedElement.style.left = `${currentX}px`;
-                draggedElement.style.top = `${currentY}px`;
-
-                // Check for swap positions
-                const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                if (target && target !== draggedElement && target.classList.contains('container')) {
-                    const rect = target.getBoundingClientRect();
-                    if (currentY > rect.top + rect.height / 2) {
-                        target.parentNode.insertBefore(placeholder, target.nextSibling);
-                    } else {
-                        target.parentNode.insertBefore(placeholder, target);
-                    }
-                }
-            });
-
-            container.addEventListener('touchend', () => {
-                if (!draggedElement) return;
-                placeholder.parentNode.insertBefore(draggedElement, placeholder);
-                draggedElement.classList.remove('dragging');
-                draggedElement.style.position = '';
-                draggedElement.style.left = '';
-                draggedElement.style.top = '';
-                placeholder.remove();
-                draggedElement = null;
-            });
-
-            // Prevent unwanted text selection on long press
-            container.addEventListener('selectstart', (event) => {
+            container.addEventListener('dragover', (event) => {
                 event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+            });
+
+            container.addEventListener('drop', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (draggedContainer !== container) {
+                    draggedContainer.innerHTML = container.innerHTML;
+                    container.innerHTML = event.dataTransfer.getData('text/plain');
+                }
+                container.classList.remove('hidden');
+            });
+
+            container.addEventListener('dragend', () => {
+                containers.forEach(c => c.classList.remove('hidden'));
+                draggedContainer = null;
             });
         });
     </script>
