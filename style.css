@@ -1,81 +1,68 @@
 /* styles.css */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
-
-.tabs {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f7;
 }
 
-.tab-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+.folder-container {
+    display: flex;
+    gap: 20px;
 }
 
-.tab-button.active, .tab-button:hover {
-    background-color: #e0e0e0;
-}
-
-.tab-content {
-    display: none;
-    padding: 20px;
-}
-
-#masterlist .container {
-    width: 48%;
-    height: calc(48vw); /* Make it square */
-    border: 1px solid #ccc;
-    margin: 1%;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease, top 0.3s ease, left 0.3s ease;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    background-color: #fff;
+.folder {
+    width: 150px;
+    height: 150px;
+    border-radius: 15px;
+    background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.container .label {
-    background-color: #f0f0f0;
-    padding: 10px;
-    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
-.container .content {
-    display: none;
-    padding: 10px;
+.folder .label {
+    background-color: #f0f0f0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    cursor: text;
 }
 
-.container.expanded {
+.folder .content {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+}
+
+.folder .content input {
+    width: 80%;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.folder.expanded {
     transform: scale(1.5);
+    z-index: 1000;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1.5);
-    z-index: 1000;
-    position: fixed;
-    width: 80%;
-    height: 80vw; /* Adjust to maintain square */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.container.expanded .content {
-    display: block;
-}
-
-.container.expanded .label {
-    background-color: #fff;
-}
-
-.container.dragging {
-    opacity: 0.5;
+.folder.expanded .content {
+    display: flex;
 }
