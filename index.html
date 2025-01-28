@@ -61,10 +61,12 @@
     </div>
     
     <div class="app-icon" id="app2">App 2</div>
+    
+    
   <script>
   function checkInputs() {
     var inputs = document.querySelectorAll('.app-icon input');
-    if (Array.from(inputs).filter(input => input.value.trim() !== '').length >= inputs.length && inputs.length < 6) {
+    if (inputs[inputs.length- 1 ].value.trim() != '') {
       var newInput = document.createElement('input');
       newInput.type = 'text';
       newInput.placeholder = 'Enter item';
@@ -73,5 +75,7 @@
   }
   document.querySelector('.app-icon').addEventListener('input', checkInputs);
 </script>
+
+
 </body>
 </html>
