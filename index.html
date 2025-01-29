@@ -29,7 +29,7 @@
             overflow-y: auto;
         }
 
-
+<!--
 
        .app-icon.expanded {
            position: fixed;
@@ -38,7 +38,22 @@
             transform: translate(-50%, -50%) scale(1.25);
            z-index: 1000;
         }
+        -->
         
+        .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 1000;
+}
+
+.popup.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
         .app-icon input[type="text"] {
             margin-left: 12px;
             margin-bottom: 10px;
@@ -96,7 +111,7 @@
         }
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
-
+<!--
         // Modified click handlers
         document.querySelectorAll('.app-icon').forEach(icon => {
             icon.addEventListener('click', (e) => {
@@ -116,7 +131,9 @@
             if (expandedIcon && !expandedIcon.contains(e.target)) {
                 expandedIcon.classList.remove('expanded');
             }
-        });
+        }); -->
+        
+        document.querySelector('.popup').classList.add('active');
     </script>
 </body>
 </html>
