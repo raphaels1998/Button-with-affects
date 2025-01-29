@@ -1,135 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expandable Boxes</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            height: 100vh;
+            margin: 0;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            overflow: hidden;
-        }
-
-        #container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            flex-wrap: wrap;
             gap: 10px;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
+            padding: 10px;
+            background: #f0f0f0;
+            overflow-x: hidden;
         }
 
         .box {
-            background-color: #3498db;
-            transition: all 0.5s ease-in-out;
-            border-radius: 10px;
+            width: calc(50% - 5px);
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
             position: relative;
-            width: 45vw;  /* Making each box a square */
-            height: 45vw; /* Same as width to keep it square */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        #overlay {
+        .box:nth-child(1) { background: #FF6B6B; }
+        .box:nth-child(2) { background: #4ECDC4; }
+        .box:nth-child(3) { background: #45B7D1; }
+        .box:nth-child(4) { background: #96CEB4; }
+        .box:nth-child(5) { background: #FFEEAD; }
+        .box:nth-child(6) { background: #D4A5A5; }
+
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(5px);
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out;
-            z-index: -1;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
         .expanded {
-            width: 70vw !important;
-            height: 70vw !important;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10;
+            width: 90vw;
+            height: 90vw;
+            z-index: 1000;
         }
 
-        .blur-background {
+        .overlay.active {
             opacity: 1;
-            visibility: visible;
+            pointer-events: auto;
         }
 
-        .expanded + #overlay {
-            opacity: 1;
-            visibility: visible;
+        .no-scroll {
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div class="box" id="box1"></div>
-        <div class="box" id="box2"></div>
-        <div class="box" id="box3"></div>
-        <div class="box" id="box4"></div>
-        <div class="box" id="box5"></div>
-        <div class="box" id="box6"></div>
-    </div>
-    <div id="overlay"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="overlay"></div>
 
     <script>
-        let isBoxExpanded = false;
-        let currentBox = null;
-
         const boxes = document.querySelectorAll('.box');
-        const overlay = document.getElementById('overlay');
-
-        // Get the center of the screen
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+        const overlay = document.querySelector('.overlay');
+        let expandedBox = null;
 
         boxes.forEach(box => {
-            box.addEventListener('click', () => {
-                if (!isBoxExpanded) {
-                    isBoxExpanded = true;
-                    currentBox = box;
-
-                    // Get the current position of the box relative to the screen
-                    const boxRect = box.getBoundingClientRect();
-
-                    // Calculate the offset to the center of the screen
-                    const offsetX = centerX - (boxRect.left + boxRect.width / 2);
-                    const offsetY = centerY - (boxRect.top + boxRect.height / 2);
-
-                    // Add the expanded class to make it larger
+            box.addEventListener('click', (e) => {
+                if (!expandedBox) {
+                    expandedBox = box;
                     box.classList.add('expanded');
-
-                    // Apply the transform to move it to the center
-                    box.style.transition = "transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out"; // Smooth transition
-                    box.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-
-                    overlay.classList.add('blur-background');
+                    overlay.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                    e.stopPropagation();
                 }
             });
         });
 
-        // When clicking on the overlay, restore the box to its original size
         overlay.addEventListener('click', () => {
-            if (isBoxExpanded) {
-                currentBox.classList.remove('expanded');
-                currentBox.style.transform = "none"; // Reset the transform to its original position
-                currentBox.style.transition = "transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out"; // Smooth transition
-                overlay.classList.remove('blur-background');
-                isBoxExpanded = false;
+            if (expandedBox) {
+                expandedBox.classList.remove('expanded');
+                overlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+                expandedBox = null;
             }
         });
     </script>
