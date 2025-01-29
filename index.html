@@ -30,9 +30,7 @@
             cursor: pointer;
             overflow-y: auto;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            /* Slower transition with ease-in-out for smoother feel */
             transition: transform 0.5s ease-in-out;
-            transform-origin: center center;
             position: relative;
         }
 
@@ -89,20 +87,21 @@
 
         function getPositionStyle(element) {
             const rect = element.getBoundingClientRect();
+            const scale = 1.25;
             
-            // Calculate center of viewport
-            const viewportCenterX = window.innerWidth / 2;
-            const viewportCenterY = window.innerHeight / 2;
+            // Calculate the scaled dimensions
+            const scaledWidth = rect.width * scale;
+            const scaledHeight = rect.height * scale;
             
-            // Calculate current center of element
-            const elementCenterX = rect.left + (rect.width / 2);
-            const elementCenterY = rect.top + (rect.height / 2);
+            // Calculate the position that will center the scaled element
+            const x = (window.innerWidth - scaledWidth) / 2;
+            const y = (window.innerHeight - scaledHeight) / 2;
             
-            // Calculate the distance to move to center
-            const moveX = viewportCenterX - elementCenterX;
-            const moveY = viewportCenterY - elementCenterY;
+            // Calculate the required translation
+            const translateX = x - rect.left;
+            const translateY = y - rect.top;
             
-            return `translate(${moveX}px, ${moveY}px) scale(1.25)`;
+            return `translate(${translateX}px, ${translateY}px) scale(${scale})`;
         }
 
         document.querySelectorAll('.app-icon').forEach(icon => {
