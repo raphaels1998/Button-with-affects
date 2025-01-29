@@ -93,35 +93,41 @@
         const boxes = document.querySelectorAll('.box');
         const overlay = document.getElementById('overlay');
 
+        // Get the center of the screen
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
         boxes.forEach(box => {
             box.addEventListener('click', () => {
                 if (!isBoxExpanded) {
                     isBoxExpanded = true;
                     currentBox = box;
 
-                    // Get the current position of the box relative to the container
+                    // Get the current position of the box relative to the screen
                     const boxRect = box.getBoundingClientRect();
-                    const containerRect = document.getElementById('container').getBoundingClientRect();
 
-                    // Calculate the position in the viewport and apply it for expansion
-                    const offsetX = boxRect.left - containerRect.left;
-                    const offsetY = boxRect.top - containerRect.top;
+                    // Calculate the offset to the center of the screen
+                    const offsetX = centerX - (boxRect.left + boxRect.width / 2);
+                    const offsetY = centerY - (boxRect.top + boxRect.height / 2);
 
-                    // Add the expanded class and set the transformation origin to the center of the box
+                    // Add the expanded class to make it larger
                     box.classList.add('expanded');
-                    box.style.transition = 'all 0.5s ease-in-out';
-                    box.style.left = `${offsetX}px`;
-                    box.style.top = `${offsetY}px`;
 
-                    // Blur the background
+                    // Apply the transform to move it to the center
+                    box.style.transition = "transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out"; // Smooth transition
+                    box.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
                     overlay.classList.add('blur-background');
                 }
             });
         });
 
+        // When clicking on the overlay, restore the box to its original size
         overlay.addEventListener('click', () => {
             if (isBoxExpanded) {
                 currentBox.classList.remove('expanded');
+                currentBox.style.transform = "none"; // Reset the transform to its original position
+                currentBox.style.transition = "transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out"; // Smooth transition
                 overlay.classList.remove('blur-background');
                 isBoxExpanded = false;
             }
