@@ -5,25 +5,21 @@
     <style>
         body {
             margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
             padding: 10px;
+            min-height: 100vh;
             background: #f0f0f0;
-            overflow-x: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            box-sizing: border-box;
         }
 
         .box {
-            width: calc(50% - 5px);
             aspect-ratio: 1;
-            background: white;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            will-change: transform;
         }
 
         .box:nth-child(1) { background: #FF6B6B; }
@@ -32,6 +28,16 @@
         .box:nth-child(4) { background: #96CEB4; }
         .box:nth-child(5) { background: #FFEEAD; }
         .box:nth-child(6) { background: #D4A5A5; }
+
+        .box.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            height: 90vw;
+            z-index: 2;
+        }
 
         .overlay {
             position: fixed;
@@ -43,37 +49,13 @@
             backdrop-filter: blur(5px);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .box.expanded {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90vw;
-            height: 90vw;
-            z-index: 1000;
-        }
-
-        .box.returning {
             transition: all 0.3s ease;
-            position: fixed;
+            z-index: 1;
         }
 
         .overlay.active {
             opacity: 1;
             pointer-events: auto;
-        }
-
-        .no-scroll {
-            overflow: hidden;
-        }
-
-        .placeholder {
-            visibility: hidden;
-            width: calc(50% - 5px);
-            aspect-ratio: 1;
         }
     </style>
 </head>
@@ -90,65 +72,22 @@
         const boxes = document.querySelectorAll('.box');
         const overlay = document.querySelector('.overlay');
         let expandedBox = null;
-        let placeholder = null;
 
         boxes.forEach(box => {
-            box.addEventListener('click', (e) => {
+            box.addEventListener('click', () => {
                 if (!expandedBox) {
                     expandedBox = box;
-                    
-                    // Create and insert placeholder
-                    placeholder = document.createElement('div');
-                    placeholder.className = 'placeholder';
-                    box.parentNode.insertBefore(placeholder, box);
-
-                    // Store original position
-                    const rect = box.getBoundingClientRect();
-                    box.style.top = rect.top + 'px';
-                    box.style.left = rect.left + 'px';
-                    box.style.width = rect.width + 'px';
-                    box.style.height = rect.height + 'px';
-
-                    // Expand
                     box.classList.add('expanded');
                     overlay.classList.add('active');
-                    document.body.classList.add('no-scroll');
-                    e.stopPropagation();
                 }
             });
         });
 
         overlay.addEventListener('click', () => {
             if (expandedBox) {
-                const box = expandedBox;
-                
-                // Get placeholder position
-                const rect = placeholder.getBoundingClientRect();
-                
-                // Add returning class for smooth animation
-                box.classList.add('returning');
-                box.classList.remove('expanded');
-                
-                // Animate to original position
-                box.style.top = rect.top + 'px';
-                box.style.left = rect.left + 'px';
-                box.style.width = rect.width + 'px';
-                box.style.height = rect.height + 'px';
-                
-                // Clean up after animation
-                setTimeout(() => {
-                    box.classList.remove('returning');
-                    box.style.top = '';
-                    box.style.left = '';
-                    box.style.width = '';
-                    box.style.height = '';
-                    placeholder.remove();
-                }, 300);
-
+                expandedBox.classList.remove('expanded');
                 overlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
                 expandedBox = null;
-                placeholder = null;
             }
         });
     </script>
