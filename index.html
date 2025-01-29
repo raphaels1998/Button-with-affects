@@ -15,12 +15,6 @@
             padding: 20px;
         }
 
-        .container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-        }
-
         .app-icon {
             width: 200px;
             height: 200px;
@@ -36,15 +30,15 @@
             cursor: pointer;
             overflow-y: auto;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            /* Smooth transition for all properties */
+            transition: transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+            transform-origin: center center;
         }
 
         .app-icon.expanded {
             position: fixed;
-            top: 50vh;
-            left: 50vw;
-            transform: translate(-50%, -50%) scale(1.25);
+            width: 250px;  /* Slightly larger when expanded */
+            height: 250px;
             z-index: 1000;
         }
         
@@ -71,15 +65,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="app-icon" id="app1">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-        </div>
-        
-        <div class="app-icon" id="app2">App 2</div>
+    <div class="app-icon" id="app1">
+        <input type="text" maxlength="12" placeholder="Enter item name">
+        <input type="text" maxlength="12" placeholder="Enter item name">
+        <input type="text" maxlength="12" placeholder="Enter item name">
     </div>
+    
+    <div class="app-icon" id="app2">App 2</div>
     
     <script>
         function checkInputs() {
@@ -96,16 +88,16 @@
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
-        function saveInitialPosition(element) {
+        function getPositionStyle(element) {
             const rect = element.getBoundingClientRect();
-            element.style.setProperty('--initial-top', rect.top + 'px');
-            element.style.setProperty('--initial-left', rect.left + 'px');
+            const centerX = window.innerWidth / 2 - rect.width / 2;
+            const centerY = window.innerHeight / 2 - rect.height / 2;
+            const translateX = centerX - rect.left;
+            const translateY = centerY - rect.top;
+            return `translate(${translateX}px, ${translateY}px) scale(1.25)`;
         }
 
         document.querySelectorAll('.app-icon').forEach(icon => {
-            // Save initial position on load
-            saveInitialPosition(icon);
-            
             icon.addEventListener('click', (e) => {
                 if (!icon.classList.contains('expanded')) {
                     // Remove expanded class from any other icons
@@ -114,22 +106,12 @@
                         expandedIcon.classList.remove('expanded');
                     });
                     
-                    // Get current position before expanding
-                    const rect = icon.getBoundingClientRect();
+                    // Calculate the transform needed to center the icon
+                    const transformStyle = getPositionStyle(icon);
                     
-                    // Set initial position
-                    icon.style.position = 'fixed';
-                    icon.style.top = rect.top + 'px';
-                    icon.style.left = rect.left + 'px';
-                    icon.style.margin = '0';
-                    icon.style.width = rect.width + 'px';
-                    icon.style.height = rect.height + 'px';
-                    
-                    // Force reflow
-                    icon.offsetHeight;
-                    
-                    // Add expanded class
+                    // Add expanded class and apply transform
                     icon.classList.add('expanded');
+                    icon.style.transform = transformStyle;
                 }
             });
         });
@@ -137,20 +119,18 @@
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
-                expandedIcon.style.position = 'relative';
-                expandedIcon.style.top = '';
-                expandedIcon.style.left = '';
-                expandedIcon.style.margin = '10px';
-                expandedIcon.style.width = '';
-                expandedIcon.style.height = '';
+                // Reset transform to original position
                 expandedIcon.style.transform = '';
                 expandedIcon.classList.remove('expanded');
             }
         });
 
-        // Update positions on window resize
+        // Update position on window resize
         window.addEventListener('resize', () => {
-            document.querySelectorAll('.app-icon').forEach(saveInitialPosition);
+            const expandedIcon = document.querySelector('.app-icon.expanded');
+            if (expandedIcon) {
+                expandedIcon.style.transform = getPositionStyle(expandedIcon);
+            }
         });
     </script>
 </body>
