@@ -15,12 +15,18 @@
             padding: 20px;
         }
 
+        .icon-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+        }
+
         .app-icon {
             width: 200px;
             height: 200px;
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 10px;
             display: block;
             justify-content: center;
             align-items: flex-start;
@@ -29,16 +35,16 @@
             color: white;
             cursor: pointer;
             overflow-y: auto;
+            position: absolute;
+            transition: all 0.3s ease-out;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            /* Smooth transition for all properties */
-            transition: transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
-            transform-origin: center center;
         }
 
         .app-icon.expanded {
             position: fixed;
-            width: 250px;  /* Slightly larger when expanded */
-            height: 250px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.25);
             z-index: 1000;
         }
         
@@ -65,13 +71,17 @@
     </style>
 </head>
 <body>
-    <div class="app-icon" id="app1">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
+    <div class="icon-wrapper">
+        <div class="app-icon" id="app1">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+        </div>
     </div>
     
-    <div class="app-icon" id="app2">App 2</div>
+    <div class="icon-wrapper">
+        <div class="app-icon" id="app2">App 2</div>
+    </div>
     
     <script>
         function checkInputs() {
@@ -88,30 +98,19 @@
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
-        function getPositionStyle(element) {
-            const rect = element.getBoundingClientRect();
-            const centerX = window.innerWidth / 2 - rect.width / 2;
-            const centerY = window.innerHeight / 2 - rect.height / 2;
-            const translateX = centerX - rect.left;
-            const translateY = centerY - rect.top;
-            return `translate(${translateX}px, ${translateY}px) scale(1.25)`;
-        }
-
         document.querySelectorAll('.app-icon').forEach(icon => {
             icon.addEventListener('click', (e) => {
+                // Get the icon's initial position before expansion
+                const rect = icon.getBoundingClientRect();
                 if (!icon.classList.contains('expanded')) {
-                    // Remove expanded class from any other icons
+                    // Store the original position
+                    icon.style.setProperty('--original-top', `${rect.top}px`);
+                    icon.style.setProperty('--original-left', `${rect.left}px`);
+                    
                     document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
-                        expandedIcon.style.transform = '';
                         expandedIcon.classList.remove('expanded');
                     });
-                    
-                    // Calculate the transform needed to center the icon
-                    const transformStyle = getPositionStyle(icon);
-                    
-                    // Add expanded class and apply transform
                     icon.classList.add('expanded');
-                    icon.style.transform = transformStyle;
                 }
             });
         });
@@ -119,17 +118,7 @@
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
-                // Reset transform to original position
-                expandedIcon.style.transform = '';
                 expandedIcon.classList.remove('expanded');
-            }
-        });
-
-        // Update position on window resize
-        window.addEventListener('resize', () => {
-            const expandedIcon = document.querySelector('.app-icon.expanded');
-            if (expandedIcon) {
-                expandedIcon.style.transform = getPositionStyle(expandedIcon);
             }
         });
     </script>
