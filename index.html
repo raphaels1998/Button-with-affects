@@ -2,123 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, maximum-scale=1 initial-scale=1.0 user-scalable=no">
-    <title>Apple App Icons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable Boxes</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            height: 100vh;
             display: flex;
             justify-content: center;
-            background-color: grey;
-            margin: 0;
-            flex-direction: row;
-            min-height: 100vh;
-            padding: 20px;
+            align-items: center;
+            background-color: #fff;
+            overflow: hidden;
         }
 
-        .icon-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 10px;
+        #container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            width: 100vw;
+            height: 100vh;
         }
 
-        .app-icon {
-            width: 200px;
-            height: 200px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: block;
-            justify-content: center;
-            align-items: flex-start;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
+        .box {
+            background-color: #3498db;
+            transition: all 0.5s ease-in-out;
+            border-radius: 10px;
             cursor: pointer;
-            overflow-y: auto;
-            position: absolute;
-            transition: all 0.3s ease-out;
-            background: linear-gradient(135deg, #90ee90, #32cd32);
+            position: relative;
         }
 
-        .app-icon.expanded {
+        #box1, #box2, #box3, #box4, #box5, #box6 {
+            height: 45%;
+            width: 45%;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+            z-index: -1;
+        }
+
+        .expanded {
+            width: 70vw !important;
+            height: 70vh !important;
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(1.25);
-            z-index: 1000;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
-        
-        .app-icon input[type="text"] {
-            margin-left: 12px;
-            margin-bottom: 10px;
-            width: 75%;
+
+        .blur-background {
+            opacity: 1;
+            visibility: visible;
         }
-        
-        input {
-            margin-top: 10px;
-            font-size: 16px;
-        }
-        
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); background-color: teal;}
-            100% { transform: scale(1); }
-        }
-        
-        .app-icon input.pop {
-            animation: pop 0.3s ease-in-out;
+
+        .expanded + #overlay {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
 <body>
-    <div class="icon-wrapper">
-        <div class="app-icon" id="app1">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-            <input type="text" maxlength="12" placeholder="Enter item name">
-        </div>
+    <div id="container">
+        <div class="box" id="box1"></div>
+        <div class="box" id="box2"></div>
+        <div class="box" id="box3"></div>
+        <div class="box" id="box4"></div>
+        <div class="box" id="box5"></div>
+        <div class="box" id="box6"></div>
     </div>
-    
-    <div class="icon-wrapper">
-        <div class="app-icon" id="app2">App 2</div>
-    </div>
-    
-    <script>
-        function checkInputs() {
-            var inputs = document.querySelectorAll('.app-icon input');
-            if (inputs[0].value.trim() != '' && inputs[1].value.trim() != '' && inputs[inputs.length - 1].value.trim() != '') {
-                var newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.placeholder = 'Enter item';
-                newInput.classList.add('pop');
-                document.querySelector('.app-icon').appendChild(newInput);
-                document.querySelector('.app-icon').scrollTop = document.querySelector('.app-icon').scrollHeight;
-            }
-        }
-        
-        document.querySelector('.app-icon').addEventListener('input', checkInputs);
+    <div id="overlay"></div>
 
-        document.querySelectorAll('.app-icon').forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                // Get the icon's initial position before expansion
-                const rect = icon.getBoundingClientRect();
-                if (!icon.classList.contains('expanded')) {
-                    // Store the original position
-                    icon.style.setProperty('--original-top', `${rect.top}px`);
-                    icon.style.setProperty('--original-left', `${rect.left}px`);
-                    
-                    document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
-                        expandedIcon.classList.remove('expanded');
-                    });
-                    icon.classList.add('expanded');
+    <script>
+        let isBoxExpanded = false;
+        let currentBox = null;
+
+        const boxes = document.querySelectorAll('.box');
+        const overlay = document.getElementById('overlay');
+
+        boxes.forEach(box => {
+            box.addEventListener('click', () => {
+                if (!isBoxExpanded) {
+                    isBoxExpanded = true;
+                    currentBox = box;
+                    box.classList.add('expanded');
+                    overlay.classList.add('blur-background');
                 }
             });
         });
 
-        document.addEventListener('click', (e) => {
-            const expandedIcon = document.querySelector('.app-icon.expanded');
-            if (expandedIcon && !expandedIcon.contains(e.target)) {
-                expandedIcon.classList.remove('expanded');
+        overlay.addEventListener('click', () => {
+            if (isBoxExpanded) {
+                currentBox.classList.remove('expanded');
+                overlay.classList.remove('blur-background');
+                isBoxExpanded = false;
             }
         });
     </script>
