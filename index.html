@@ -3,19 +3,23 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-          body {
+        body {
             display: flex;
-             flex-wrap: wrap;
-             justify-content: center;
-             gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 0;
+            min-height: 100vh;
         }
         
         .container {
             display: flex;
-            flex-wrap: wrap;  /* Prevents boxes from shifting */
+            flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
             position: relative;
+            width: 100%;
+            padding: 20px;
          }
 
         .box {
@@ -25,6 +29,7 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            flex-shrink: 0; /* Prevent boxes from shrinking */
         }
 
         .box:nth-child(1) { background: #FF6B6B; }
@@ -32,7 +37,6 @@
         .box:nth-child(3) { background: #45B7D1; }
         .box:nth-child(4) { background: #96CEB4; }
         .box:nth-child(5) { background: #FFEEAD; }
-        <!--.box:nth-child(6) { background: #D4A5A5; }-->
 
         .box.expanded {
             position: fixed;
@@ -62,28 +66,45 @@
             opacity: 1;
             pointer-events: auto;
         }
+
+        /* Add placeholder styling */
+        .box-placeholder {
+            width: 150px;
+            aspect-ratio: 1;
+            visibility: hidden;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    
     <div class="container">
          <div class="box"></div>
          <div class="box"></div>
          <div class="box"></div>
          <div class="box"></div>
          <div class="box"></div>
-         <!--<div class="box"></div>-->
     </div>
     <div class="overlay"></div>
 
     <script>
         const boxes = document.querySelectorAll('.box');
         const overlay = document.querySelector('.overlay');
+        const container = document.querySelector('.container');
         let expandedBox = null;
 
         boxes.forEach(box => {
             box.addEventListener('click', () => {
                 if (!expandedBox) {
+                    // Create placeholder
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'box-placeholder';
+                    
+                    // Insert placeholder where the box was
+                    container.insertBefore(placeholder, box);
+                    
+                    // Move box to body to break out of container flow
+                    document.body.appendChild(box);
+                    
                     expandedBox = box;
                     box.classList.add('expanded');
                     overlay.classList.add('active');
@@ -93,6 +114,15 @@
 
         overlay.addEventListener('click', () => {
             if (expandedBox) {
+                // Find the corresponding placeholder
+                const placeholder = container.querySelector('.box-placeholder');
+                
+                // Move box back to its original position
+                container.insertBefore(expandedBox, placeholder);
+                
+                // Remove placeholder
+                if (placeholder) placeholder.remove();
+                
                 expandedBox.classList.remove('expanded');
                 overlay.classList.remove('active');
                 expandedBox = null;
