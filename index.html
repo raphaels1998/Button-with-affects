@@ -12,6 +12,14 @@
             margin: 0;
             flex-direction: row;
             min-height: 100vh;
+            padding: 20px;
+        }
+
+        .icon-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
         }
 
         .app-icon {
@@ -19,7 +27,6 @@
             height: 200px;
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 10px;
             display: block;
             justify-content: center;
             align-items: flex-start;
@@ -28,9 +35,9 @@
             color: white;
             cursor: pointer;
             overflow-y: auto;
-            /* Add smooth transition for all transforming properties */
-            transition: all 0.3s ease-in-out;
-            position: relative;
+            position: absolute;
+            transition: all 0.3s ease-out;
+            background: linear-gradient(135deg, #90ee90, #32cd32);
         }
 
         .app-icon.expanded {
@@ -39,17 +46,6 @@
             left: 50%;
             transform: translate(-50%, -50%) scale(1.25);
             z-index: 1000;
-            /* Add transition delay for smoother appearance */
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Create a placeholder to prevent layout shift */
-        .app-icon.expanded::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            visibility: hidden;
         }
         
         .app-icon input[type="text"] {
@@ -72,28 +68,20 @@
         .app-icon input.pop {
             animation: pop 0.3s ease-in-out;
         }
-
-        #app1 {
-            background: linear-gradient(135deg, #90ee90, #32cd32);
-        }
-
-        #app2 {
-            background: linear-gradient(135deg, #90ee90, #32cd32);
-        }
-
-        .app-icon:active {
-            transform: scale(0.95);
-        }
     </style>
 </head>
 <body>
-    <div class="app-icon" id="app1">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
+    <div class="icon-wrapper">
+        <div class="app-icon" id="app1">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+        </div>
     </div>
     
-    <div class="app-icon" id="app2">App 2</div>
+    <div class="icon-wrapper">
+        <div class="app-icon" id="app2">App 2</div>
+    </div>
     
     <script>
         function checkInputs() {
@@ -112,7 +100,13 @@
 
         document.querySelectorAll('.app-icon').forEach(icon => {
             icon.addEventListener('click', (e) => {
+                // Get the icon's initial position before expansion
+                const rect = icon.getBoundingClientRect();
                 if (!icon.classList.contains('expanded')) {
+                    // Store the original position
+                    icon.style.setProperty('--original-top', `${rect.top}px`);
+                    icon.style.setProperty('--original-left', `${rect.left}px`);
+                    
                     document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
                         expandedIcon.classList.remove('expanded');
                     });
