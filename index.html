@@ -107,10 +107,13 @@
                     const offsetX = boxRect.left - containerRect.left;
                     const offsetY = boxRect.top - containerRect.top;
 
+                    // Add the expanded class and set the transformation origin to the center of the box
                     box.classList.add('expanded');
+                    box.style.transition = 'all 0.5s ease-in-out';
                     box.style.left = `${offsetX}px`;
                     box.style.top = `${offsetY}px`;
 
+                    // Blur the background
                     overlay.classList.add('blur-background');
                 }
             });
