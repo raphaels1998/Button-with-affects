@@ -30,15 +30,14 @@
             cursor: pointer;
             overflow-y: auto;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            /* Smooth transition for all properties */
-            transition: transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+            /* Slower transition with ease-in-out for smoother feel */
+            transition: transform 0.5s ease-in-out;
             transform-origin: center center;
+            position: relative;
         }
 
         .app-icon.expanded {
             position: fixed;
-            width: 250px;  /* Slightly larger when expanded */
-            height: 250px;
             z-index: 1000;
         }
         
@@ -90,11 +89,20 @@
 
         function getPositionStyle(element) {
             const rect = element.getBoundingClientRect();
-            const centerX = window.innerWidth / 2 - rect.width / 2;
-            const centerY = window.innerHeight / 2 - rect.height / 2;
-            const translateX = centerX - rect.left;
-            const translateY = centerY - rect.top;
-            return `translate(${translateX}px, ${translateY}px) scale(1.25)`;
+            
+            // Calculate center of viewport
+            const viewportCenterX = window.innerWidth / 2;
+            const viewportCenterY = window.innerHeight / 2;
+            
+            // Calculate current center of element
+            const elementCenterX = rect.left + (rect.width / 2);
+            const elementCenterY = rect.top + (rect.height / 2);
+            
+            // Calculate the distance to move to center
+            const moveX = viewportCenterX - elementCenterX;
+            const moveY = viewportCenterY - elementCenterY;
+            
+            return `translate(${moveX}px, ${moveY}px) scale(1.25)`;
         }
 
         document.querySelectorAll('.app-icon').forEach(icon => {
@@ -106,12 +114,12 @@
                         expandedIcon.classList.remove('expanded');
                     });
                     
-                    // Calculate the transform needed to center the icon
+                    // Calculate position and apply transform
                     const transformStyle = getPositionStyle(icon);
-                    
-                    // Add expanded class and apply transform
                     icon.classList.add('expanded');
-                    icon.style.transform = transformStyle;
+                    requestAnimationFrame(() => {
+                        icon.style.transform = transformStyle;
+                    });
                 }
             });
         });
@@ -119,7 +127,6 @@
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
-                // Reset transform to original position
                 expandedIcon.style.transform = '';
                 expandedIcon.classList.remove('expanded');
             }
