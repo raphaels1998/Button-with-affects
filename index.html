@@ -15,6 +15,12 @@
             padding: 20px;
         }
 
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
         .app-icon {
             width: 200px;
             height: 200px;
@@ -30,14 +36,14 @@
             cursor: pointer;
             overflow-y: auto;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            transition: all 0.5s ease-in-out;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
 
         .app-icon.expanded {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50vh;
+            left: 50vw;
             transform: translate(-50%, -50%) scale(1.25);
             z-index: 1000;
         }
@@ -65,13 +71,15 @@
     </style>
 </head>
 <body>
-    <div class="app-icon" id="app1">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
-        <input type="text" maxlength="12" placeholder="Enter item name">
+    <div class="container">
+        <div class="app-icon" id="app1">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+            <input type="text" maxlength="12" placeholder="Enter item name">
+        </div>
+        
+        <div class="app-icon" id="app2">App 2</div>
     </div>
-    
-    <div class="app-icon" id="app2">App 2</div>
     
     <script>
         function checkInputs() {
@@ -88,29 +96,40 @@
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
+        function saveInitialPosition(element) {
+            const rect = element.getBoundingClientRect();
+            element.style.setProperty('--initial-top', rect.top + 'px');
+            element.style.setProperty('--initial-left', rect.left + 'px');
+        }
+
         document.querySelectorAll('.app-icon').forEach(icon => {
+            // Save initial position on load
+            saveInitialPosition(icon);
+            
             icon.addEventListener('click', (e) => {
                 if (!icon.classList.contains('expanded')) {
-                    // Store the original position
-                    const rect = icon.getBoundingClientRect();
-                    icon.style.top = rect.top + 'px';
-                    icon.style.left = rect.left + 'px';
-                    icon.style.position = 'fixed';
-                    icon.style.transform = 'none';
-                    
                     // Remove expanded class from any other icons
                     document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
-                        expandedIcon.style.transform = 'none';
-                        expandedIcon.style.position = 'relative';
-                        expandedIcon.style.top = '';
-                        expandedIcon.style.left = '';
+                        expandedIcon.style.transform = '';
                         expandedIcon.classList.remove('expanded');
                     });
                     
-                    // Add expanded class and trigger animation
-                    requestAnimationFrame(() => {
-                        icon.classList.add('expanded');
-                    });
+                    // Get current position before expanding
+                    const rect = icon.getBoundingClientRect();
+                    
+                    // Set initial position
+                    icon.style.position = 'fixed';
+                    icon.style.top = rect.top + 'px';
+                    icon.style.left = rect.left + 'px';
+                    icon.style.margin = '0';
+                    icon.style.width = rect.width + 'px';
+                    icon.style.height = rect.height + 'px';
+                    
+                    // Force reflow
+                    icon.offsetHeight;
+                    
+                    // Add expanded class
+                    icon.classList.add('expanded');
                 }
             });
         });
@@ -118,14 +137,20 @@
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
-                // Get current position
-                const rect = expandedIcon.getBoundingClientRect();
-                expandedIcon.style.transform = 'none';
                 expandedIcon.style.position = 'relative';
                 expandedIcon.style.top = '';
                 expandedIcon.style.left = '';
+                expandedIcon.style.margin = '10px';
+                expandedIcon.style.width = '';
+                expandedIcon.style.height = '';
+                expandedIcon.style.transform = '';
                 expandedIcon.classList.remove('expanded');
             }
+        });
+
+        // Update positions on window resize
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.app-icon').forEach(saveInitialPosition);
         });
     </script>
 </body>
