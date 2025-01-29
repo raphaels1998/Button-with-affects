@@ -30,12 +30,15 @@
             cursor: pointer;
             overflow-y: auto;
             background: linear-gradient(135deg, #90ee90, #32cd32);
-            transition: transform 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
             position: relative;
         }
 
         .app-icon.expanded {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.25);
             z-index: 1000;
         }
         
@@ -85,39 +88,28 @@
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
 
-        function getPositionStyle(element) {
-            const rect = element.getBoundingClientRect();
-            const scale = 1.25;
-            
-            // Calculate the scaled dimensions
-            const scaledWidth = rect.width * scale;
-            const scaledHeight = rect.height * scale;
-            
-            // Calculate the position that will center the scaled element
-            const x = (window.innerWidth - scaledWidth) / 2;
-            const y = (window.innerHeight - scaledHeight) / 2;
-            
-            // Calculate the required translation
-            const translateX = x - rect.left;
-            const translateY = y - rect.top;
-            
-            return `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-        }
-
         document.querySelectorAll('.app-icon').forEach(icon => {
             icon.addEventListener('click', (e) => {
                 if (!icon.classList.contains('expanded')) {
+                    // Store the original position
+                    const rect = icon.getBoundingClientRect();
+                    icon.style.top = rect.top + 'px';
+                    icon.style.left = rect.left + 'px';
+                    icon.style.position = 'fixed';
+                    icon.style.transform = 'none';
+                    
                     // Remove expanded class from any other icons
                     document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
-                        expandedIcon.style.transform = '';
+                        expandedIcon.style.transform = 'none';
+                        expandedIcon.style.position = 'relative';
+                        expandedIcon.style.top = '';
+                        expandedIcon.style.left = '';
                         expandedIcon.classList.remove('expanded');
                     });
                     
-                    // Calculate position and apply transform
-                    const transformStyle = getPositionStyle(icon);
-                    icon.classList.add('expanded');
+                    // Add expanded class and trigger animation
                     requestAnimationFrame(() => {
-                        icon.style.transform = transformStyle;
+                        icon.classList.add('expanded');
                     });
                 }
             });
@@ -126,16 +118,13 @@
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
-                expandedIcon.style.transform = '';
+                // Get current position
+                const rect = expandedIcon.getBoundingClientRect();
+                expandedIcon.style.transform = 'none';
+                expandedIcon.style.position = 'relative';
+                expandedIcon.style.top = '';
+                expandedIcon.style.left = '';
                 expandedIcon.classList.remove('expanded');
-            }
-        });
-
-        // Update position on window resize
-        window.addEventListener('resize', () => {
-            const expandedIcon = document.querySelector('.app-icon.expanded');
-            if (expandedIcon) {
-                expandedIcon.style.transform = getPositionStyle(expandedIcon);
             }
         });
     </script>
