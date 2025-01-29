@@ -11,8 +11,10 @@
             background-color: grey;
             margin: 0;
             flex-direction: row;
+            min-height: 100vh;
         }
- .app-icon {
+
+        .app-icon {
             width: 200px;
             height: 200px;
             border-radius: 20px;
@@ -25,19 +27,30 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            transition: transform 0.1s ease-in-out;
             overflow-y: auto;
+            /* Add smooth transition for all transforming properties */
+            transition: all 0.3s ease-in-out;
+            position: relative;
         }
 
-
-       .app-icon.expanded {
-           position: fixed;
-           top: 50%;
-           left: 50%;
+        .app-icon.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%) scale(1.25);
-           z-index: 1000;
+            z-index: 1000;
+            /* Add transition delay for smoother appearance */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
+        /* Create a placeholder to prevent layout shift */
+        .app-icon.expanded::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            visibility: hidden;
+        }
         
         .app-icon input[type="text"] {
             margin-left: 12px;
@@ -96,11 +109,10 @@
         }
         
         document.querySelector('.app-icon').addEventListener('input', checkInputs);
-        // Modified click handlers
+
         document.querySelectorAll('.app-icon').forEach(icon => {
             icon.addEventListener('click', (e) => {
                 if (!icon.classList.contains('expanded')) {
-                    // Only expand if it's not already expanded
                     document.querySelectorAll('.app-icon.expanded').forEach(expandedIcon => {
                         expandedIcon.classList.remove('expanded');
                     });
@@ -109,15 +121,12 @@
             });
         });
 
-        // Handle clicks on the document
         document.addEventListener('click', (e) => {
             const expandedIcon = document.querySelector('.app-icon.expanded');
             if (expandedIcon && !expandedIcon.contains(e.target)) {
                 expandedIcon.classList.remove('expanded');
             }
-        }); 
-        
-        
+        });
     </script>
 </body>
 </html>
